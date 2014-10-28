@@ -7,7 +7,7 @@ import javax.ejb.MessageDriven;
 
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
-import org.vertx.java.core.eventbus.Message;
+import io.vertx.core.eventbus.Message;
 import org.vertx.java.resourceadapter.inflow.VertxListener;
 
 /**

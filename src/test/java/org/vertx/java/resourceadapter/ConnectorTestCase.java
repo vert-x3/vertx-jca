@@ -96,58 +96,55 @@ public class ConnectorTestCase
    @Test
    public void testGetConnection() throws Throwable
    {
-//      assertNotNull(connectionFactory);
-//      
-//      final EventBus eventBus = connectionFactory.getVertxConnection().eventBus();
-//      assertNotNull(eventBus);
-//      
-//      Assert.assertEquals(eventBus.getClass(), WrappedEventBus.class);
-//      
-//      VertxPlatformConfiguration config = new VertxPlatformConfiguration();
-//      config.setClusterHost("localhost");
-//      config.setClusterPort(0);
-//      
-//      // Vertx has started already.
-//      VertxPlatformFactory.instance().createVertxIfNotStart(config, new VertxPlatformFactory.VertxListener()
-//      {
-//         @Override
-//         public void whenReady(Vertx vertx)
-//         {
-//            ConnectorTestCase.this.vertx = vertx;
-//         }
-//         
-//      });
-//      
-//      TestVertxPlatformManager testPlatformManager = new TestVertxPlatformManager(vertx);
-//      testPlatformManager.deployAndRunVerticle(OutboundTestVerticle.class.getName());
-//      Handler<Message<String>> msg = h -> {
-//                  
-//      };
-//      
-//      eventBus.send("outbound-address", "JCA", new Handler<AsyncResult<Message<String>>>(){
-//        
-//        @Override
-//        public void handle(AsyncResult<Message<String>> event) {
-//          
-//          String body = event.result().body();
-//          try
-//          {
-//             Assert.assertEquals("Hello JCA from Outbound", body);
-//          }
-//          finally
-//          {
-//             testGetConnectionCompleted = true;
-//          }
-//        }
-//        
-//      });          
-//      while(!testGetConnectionCompleted)
-//      {
-//         Thread.sleep(1000);
-//      }
-//      
-//      Assert.assertTrue(this.testGetConnectionCompleted);
-//      testCompleted();
+      assertNotNull(connectionFactory);
+      
+      final EventBus eventBus = connectionFactory.getVertxConnection().eventBus();
+      assertNotNull(eventBus);
+      
+      Assert.assertEquals(eventBus.getClass(), WrappedEventBus.class);
+      
+      VertxPlatformConfiguration config = new VertxPlatformConfiguration();
+      config.setClusterHost("localhost");
+      config.setClusterPort(0);
+      
+      // Vertx has started already.
+      VertxPlatformFactory.instance().createVertxIfNotStart(config, new VertxPlatformFactory.VertxListener()
+      {
+         @Override
+         public void whenReady(Vertx vertx)
+         {
+            ConnectorTestCase.this.vertx = vertx;
+         }
+         
+      });
+      
+      TestVertxPlatformManager testPlatformManager = new TestVertxPlatformManager(vertx);
+      testPlatformManager.deployAndRunVerticle(OutboundTestVerticle.class.getName());
+      Handler<Message<String>> msg = h -> {
+                  
+      };
+      
+      eventBus.send("outbound-address", "JCA", jx -> {
+        
+          String body = (String)jx.result().body();
+          
+          try
+          {
+             Assert.assertEquals("Hello JCA from Outbound", body);
+          }
+          finally
+          {
+             testGetConnectionCompleted = true;
+          }
+        
+      });          
+      while(!testGetConnectionCompleted)
+      {
+         Thread.sleep(1000);
+      }
+      
+      Assert.assertTrue(this.testGetConnectionCompleted);
+      testCompleted();
    }
    
    

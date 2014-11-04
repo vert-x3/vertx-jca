@@ -1,5 +1,4 @@
 JCA Resource Adapter for Vert.x 3.x
-======================
 
 JCA adapter for Vertx to interaction between JavaEE application server and Vertx 3.x cluster.
 
@@ -9,7 +8,7 @@ Overview
 The idea of the resource adapter is try to start an embedded Vertx within the JavaEE application server, then expose the Vertx
 distributed event bus and shared data as JCA components.
 
-It supports both outbound and inbound vertx communication. 
+It supports both outbound and inbound vertx communication.
 
 
 Maven Dependency
@@ -38,7 +37,7 @@ Outbound communication
 
 An application component like a web application(a .war), an ejb instance can send message to the Vertx cluster using outbound communication.
 
-Typical usage is try to get the <b>org.vertx.java.resourceadapter.VertxConnectionFactory</b> using a JNDI lookup, or inject the resource using CDI, 
+Typical usage is try to get the <b>org.vertx.java.resourceadapter.VertxConnectionFactory</b> using a JNDI lookup, or inject the resource using CDI,
 then gets one <b>org.vertx.java.resourceadapter.VertxConnection</b> instance, then you can get the Vertx <b>EventBus</b> to send messages.
 
 <pre>
@@ -48,7 +47,7 @@ org.vertx.java.resourceadapter.VertxConnection conn = null;
 try
 {
    ctx = new javax.naming.InitialContext();
-   org.vertx.java.resourceadapter.VertxConnectionFactory connFactory = 
+   org.vertx.java.resourceadapter.VertxConnectionFactory connFactory =
    (org.vertx.java.resourceadapter.VertxConnectionFactory)ctx.lookup("java:/eis/VertxConnectionFactory");
    conn = connFactory.getVertxConnection();
    conn.eventBus().send("outbound-address", "Hello from JCA");
@@ -61,11 +60,11 @@ finally
 {
    if (ctx != null)
    {
-      ctx.close();  
+      ctx.close();
    }
    if (conn != null)
    {
-      conn.close();  
+      conn.close();
    }
 }
 </pre>
@@ -94,7 +93,7 @@ import javax.ejb.MessageDriven;
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
 
-@MessageDriven(name = "VertxMonitor", 
+@MessageDriven(name = "VertxMonitor",
        messageListenerInterface = VertxListener.class,
        activationConfig = {
                    @ActivationConfigProperty(propertyName = "address", propertyValue = "inbound-address"),
@@ -105,9 +104,9 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
 public class VertxMonitor implements VertxListener {
 
    private Logger logger = Logger.getLogger(VertxMonitor.class.getName());
-   
+
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public VertxMonitor() {
         logger.info("VertxMonitor started.");
@@ -163,7 +162,7 @@ Credits to IronJacamar
 -------
 
 [IronJacamar](http://www.ironjacamar.org/) is the top lead JCA implementation in the industry, it supports JCA 1.0/1.5/1.6/1.7, and is adopted by [WildFly](http://www.wildfly.org/) application server.
-   
+
 This resource adapter uses IronJacamar as the development and test environment.
 
 
@@ -172,7 +171,7 @@ Building
 
 It uses gradle for the building, change your current working directory to the codes, then run the command:
 
-> ./gradlew clean rar 
+> ./gradlew clean rar
 
 It will generate the resource adapter file (.rar file) in the <b>ra/build/libs/</b> directory.
 
@@ -212,3 +211,4 @@ For examples, please refer to this [document](https://github.com/gaol/vertx-reso
 If you get any issues or suggestions, you are appreciated to share the idea by firing an issue [here](https://github.com/vert-x/jca-adapter/issues/new)
 
 Have fun!
+

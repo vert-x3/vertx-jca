@@ -65,8 +65,8 @@ public class ConnectorTestCase {
 
   @Before
   public void setUp() {
-    System.setProperty("vertx.clusterManagerFactory",
-        FakeClusterManagerFactory.class.getName());
+//    System.setProperty("vertx.clusterManagerFactory",
+//        FakeClusterManagerFactory.class.getName());
   }
 
   /**
@@ -127,11 +127,12 @@ public class ConnectorTestCase {
           }
 
         });
-
-    TestVertxPlatformManager testPlatformManager = new TestVertxPlatformManager(
-        vertx);
-    testPlatformManager.deployAndRunVerticle(OutboundTestVerticle.class
-        .getName());
+    
+    vertx.deployVerticle(OutboundTestVerticle.class.getName());
+//    TestVertxPlatformManager testPlatformManager = new TestVertxPlatformManager(
+//        vertx);
+//    testPlatformManager.deployAndRunVerticle(OutboundTestVerticle.class
+//        .getName());
     Handler<Message<String>> msg = h -> {
 
     };

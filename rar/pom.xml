@@ -12,6 +12,9 @@
 
   <artifactId>vertx-jca-adapter</artifactId>
   <packaging>rar</packaging>
+  <properties>
+    <version.org.jboss.ironjacamar>1.2.0.Final</version.org.jboss.ironjacamar>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -33,11 +36,166 @@
         <artifactId>ext-jca-adapter</artifactId>
         <version>${project.version}</version>
       </dependency>
-      -->
       <dependency>
         <groupId>javax</groupId>
         <artifactId>javaee-api</artifactId>
         <scope>provided</scope>
+      </dependency>
+      -->
+      <dependency>
+        <groupId>org.jboss.spec</groupId>
+        <artifactId>jboss-javaee-7.0</artifactId>
+        <version>1.0.0.Final</version>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>1.1.5.Final</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian.junit</groupId>
+        <artifactId>arquillian-junit-container</artifactId>
+      </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-spec-api</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-arquillian-embedded</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-arquillian-embedded-byteman</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-common-api</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-common-spi</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-common-impl</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-core-api</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-core-impl</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-depchain</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-deployers-common</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-deployers-fungal</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-embedded</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-test-eis</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-validator</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+        <groupId>org.jboss.ironjacamar</groupId>
+        <artifactId>ironjacamar-arquillian-embedded</artifactId>
+        <version>1.2.0.Final</version>
+      </dependency>
+       <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-depchain</artifactId>
+      <version>1.2.0.Final</version>
+      <scope>test</scope>
+      <type>pom</type>
+    </dependency>
+
+      <!--
+      <dependency>
+        <groupId>org.wildfly</groupId>
+        <artifactId>wildfly-arquillian-container-embedded</artifactId>
+        <version>8.1.0.Final</version>
+        <scope>test</scope>
+      </dependency>
+      -->
+      <dependency>
+        <groupId>org.jboss.naming</groupId>
+        <artifactId>jnpserver</artifactId>
+        <version>5.0.5.Final</version>
+      </dependency>
+      <!--
+      <dependency>
+        <groupId>org.jboss.arquillian.container</groupId>
+        <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+        <exclusions>
+          <exclusion>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-container-spi</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      -->
+      <!--
+      <dependency>
+        <groupId>org.jboss.weld</groupId>
+        <artifactId>weld-core</artifactId>
+      </dependency>
+      -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
       </dependency>
     </dependencies>
 
@@ -70,4 +228,18 @@
         </plugin>
       </plugins>
     </build>
+  <repositories>
+    <repository>
+      <id>jboss</id>
+      <url>http://repository.jboss.org/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>snapshots</id>
+      <url>http://repository.jboss.org/nexus/content/repositories/snapshots</url>
+    </repository>
+    <repository>
+      <id>fungal</id>
+      <url>http://jesperpedersen.github.com/fungal/maven2</url>
+    </repository>
+  </repositories>
   </project>

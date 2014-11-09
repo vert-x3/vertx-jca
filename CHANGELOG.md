@@ -16,8 +16,26 @@ The first version available in Maven Repository will be <b>1.0.3.Beta1</b>, whic
 The <b>1.0.0</b>, <b>1.0.1</b> and <b>1.0.2</b> releases can be found in [Bintary](https://bintray.com/gaol/downloads/vertx-resource-adapter)
 
 
+The current version for the JCA adapter is 3.0.0-SNAPSHOT, which reflects
+a move to the Vert.X 3.x release, as well as a variety of improvements. 
+
+<pre>
+
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
+    &lt;artifactId&gt;vertx-jca-adaptor&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+</pre>
+
+
 Changelogs:
 ======================
+
+3.0.0-SNAPSHOT
+----
+- Update to Vert.x 3.x
+- Reformatted code for Vert.x compliance
+- Changed package names for Vert.x compliance
 
 1.0.3.Beta1
 ------

@@ -14,12 +14,12 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package org.vertx.java.resourceadapter;
+package io.vertx.resourceadapter.test;
 
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.core.spi.cluster.VertxSPI;
 
-public class FakeClusterManagerFactory{
+public class FakeClusterManagerFactory {
 
   public ClusterManager createClusterManager(VertxSPI vertx) {
     FakeClusterManager manager = new FakeClusterManager();

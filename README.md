@@ -1,7 +1,7 @@
 JCA Resource Adapter for Vert.x 3.x
 ===
 
-A JCA 1.6 compliant adapter for allowing for the integration of a Vert.x 3.x cluster with a JEE compliant application server.
+A JCA 1.6 compliant adapter allowing for the integration of the Vert.x 3.x runtime with a JEE compliant application server.
 
 Overview
 ------
@@ -27,7 +27,7 @@ Maven dependency of this adapter:
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;
     &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
-    &lt;version&gt;1.0.3&lt;/version&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
     &lt;type&gt;rar&lt;/type&gt;
   &lt;/dependency&gt;
 
@@ -44,12 +44,12 @@ then gets one <b>org.vertx.java.resourceadapter.VertxConnection</b> instance, th
 <pre>
 
 javax.naming.InitialContext ctx = null;
-org.vertx.java.resourceadapter.VertxConnection conn = null;
+io.vertx.resourceadapter.VertxConnection conn = null;
 try
 {
    ctx = new javax.naming.InitialContext();
-   org.vertx.java.resourceadapter.VertxConnectionFactory connFactory =
-   (org.vertx.java.resourceadapter.VertxConnectionFactory)ctx.lookup("java:/eis/VertxConnectionFactory");
+   io.vertx.resourceadapter.VertxConnectionFactory connFactory =
+   (io.vertx.resourceadapter.VertxConnectionFactory)ctx.lookup("java:/eis/VertxConnectionFactory");
    conn = connFactory.getVertxConnection();
    conn.eventBus().send("outbound-address", "Hello from JCA");
 }
@@ -70,21 +70,21 @@ finally
 }
 </pre>
 
-   * NOTE: always call <b>org.vertx.java.resourceadapter.VertxConnection.close()</b> when you does not need the connection anymore, otherwise the connection pool will be full very soon.
+   * NOTE: always call <b>io.vertx.resourceadapter.VertxConnection.close()</b> when you does not need the connection anymore, otherwise the connection pool will be full very soon.
 
 Inbound communication
 ------
 
 Usually a MDB is the client which receives inbound communication from a Vert.x cluster.
 
-The end point of the MDB implements interface: <b>org.vertx.java.resourceadapter.inflow.VertxListener</b>.
+The end point of the MDB implements interface: <b>io.vertx.resourceadapter.inflow.VertxListener</b>.
 
 <pre>
 
-package org.vertx.java.ra.examples.mdb;
+package io.vertx.resourceadapter.examples.mdb;
 
-import org.vertx.java.resourceadapter.inflow.VertxListener;
-import org.vertx.java.core.eventbus.Message;
+import io.vertx.resourceadapter.inflow.VertxListener;
+import io.vertx.core.eventbus.Message;
 
 import java.util.logging.Logger;
 
@@ -101,7 +101,7 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
                    @ActivationConfigProperty(propertyName = "clusterHost", propertyValue = "localhost"),
                    @ActivationConfigProperty(propertyName = "clusterPort", propertyValue = "0"),
                    })
-@ResourceAdapter("jca-adapter-1.0.3.rar")
+@ResourceAdapter("TODO")
 public class VertxMonitor implements VertxListener {
 
    private Logger logger = Logger.getLogger(VertxMonitor.class.getName());
@@ -159,57 +159,32 @@ The configuration of outbound and inbound are almost the same, they are:
      * <b>address</b> specifies in which vertx event bus address the Endpoint(MDB) listen.
 
 
-Credits to IronJacamar
+Credits
 -------
 
 [IronJacamar](http://www.ironjacamar.org/) is the top lead JCA implementation in the industry, it supports JCA 1.0/1.5/1.6/1.7, and is adopted by [WildFly](http://www.wildfly.org/) application server.
 
 This resource adapter uses IronJacamar as the development and test environment.
 
+A special thanks to Lin Gao for his original work on the Vert.x JCA adapter. He paved the way. For those interested, his original implementation can be found at [his original Git repository](https://github.com/vert-x/jca-adaptor).
+
+
 
 Building
 -------
+To build the adapter simply type
 
-It uses gradle for the building, change your current working directory to the codes, then run the command:
+mvn package
 
-> ./gradlew clean rar
-
-It will generate the resource adapter file (.rar file) in the <b>ra/build/libs/</b> directory.
-
-If you want to build the examples, run the command:
-
-> ./gradlew clean build -Dexamples
+This will result in the adapter being built to ./target/
 
 Deploy to Wildfly
 -------
-Follow the steps below to deploy the resource adapter to WildFly application server:
-
-   * Build it from source or download from the [Bintary](https://bintray.com/gaol/downloads/vertx-resource-adapter)
-
-   * Starts the WildFly application server.
-
-> WILDFLY-HOME/bin/standalone.sh -c standalone-full.xml
-
-   * Deploy the .rar file
-
-> WILDFLY-HOME/bin/jboss-cli.sh --connect --command="deploy ra/build/libs/jca-adapter-1.0.3.rar"
-> WILDFLY-HOME/bin/jboss-cli.sh --connect --file=build/etc/wildfly-ra-sample.cli
-
-Jenkins
-------
-[![Build on CloudBees](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png)](https://vertx-resource-adapter.ci.cloudbees.com/)
-
-Downloads
--------
-You can download the resouce adapter from: [Bintary](https://bintray.com/gaol/downloads/vertx-resource-adapter)
+TODO
 
 Examples
 -------
-For examples, please refer to this [document](https://github.com/gaol/vertx-resource-adapter/wiki/Vertx-Resource-Adapter-Example/)
-
-
-
-If you get any issues or suggestions, you are appreciated to share the idea by firing an issue [here](https://github.com/vert-x/jca-adapter/issues/new)
+TODO
 
 Have fun!
 

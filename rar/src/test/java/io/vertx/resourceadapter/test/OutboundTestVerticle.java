@@ -1,4 +1,4 @@
-package org.vertx.java.resourceadapter;
+package io.vertx.resourceadapter.test;
 
 /*
  * Copyright 2013 Red Hat, Inc.
@@ -20,6 +20,7 @@ package org.vertx.java.resourceadapter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.Message;
+
 /**
  * Listens on address: "outbound-address"
  * 
@@ -28,18 +29,16 @@ import io.vertx.core.eventbus.Message;
  * @author Lin Gao <lgao@redhat.com>
  *
  */
-public class OutboundTestVerticle extends AbstractVerticle
-{
+public class OutboundTestVerticle extends AbstractVerticle {
 
-   public void start()
-   {
-       this.vertx.eventBus().consumer("outbound-address").handler((Message<Object> msg) ->{
-         String string = (String)msg.body();
-         if (string != null && string.length() > 0)
-         {
+  public void start() {
+    this.vertx.eventBus().consumer("outbound-address")
+        .handler((Message<Object> msg) -> {
+          String string = (String) msg.body();
+          if (string != null && string.length() > 0) {
             msg.reply("Hello " + string + " from Outbound");
-         }         
-       });          
+          }
+        });
 
-   }
+  }
 }

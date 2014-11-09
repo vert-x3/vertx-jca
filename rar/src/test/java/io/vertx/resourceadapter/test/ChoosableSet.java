@@ -14,7 +14,7 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package org.vertx.java.resourceadapter;
+package io.vertx.resourceadapter.test;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.spi.cluster.ChoosableIterable;

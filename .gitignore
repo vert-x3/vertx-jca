@@ -1,11 +1,22 @@
-bin
-target
-build
+.DS_Store
+.gradle
+.idea
 .classpath
 .project
 .settings
-.gradle
-classes
+.yardoc
+.yardopts
+build
+target
+out
+*.iml
+*.ipr
+*.iws
+test-output
+Scratch.java
+ScratchTest.java
+test-results
+test-tmp
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -18,4 +29,8 @@ classes
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+ScratchPad.java
+src/main/resources/ext-js/*.js
+src/main/java/io/vertx/java/**/*.java
+src/main/groovy/io/vertx/groovy/**/*.groovy
 *.swp

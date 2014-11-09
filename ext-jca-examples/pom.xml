@@ -1,139 +1,127 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <!--
-  <parent>
-    <groupId>io.vertx</groupId>
-    <artifactId>ext-jca</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  -->
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.vertx</groupId>
   <artifactId>ext-jca-examples</artifactId>
   <version>3.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.jboss.ejb3</groupId>
-      <artifactId>jboss-ejb3-ext-api</artifactId>
-      <version>2.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-core</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-hazelcast</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>ext-jca</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.hazelcast</groupId>
-      <artifactId>hazelcast</artifactId>
-      <version>3.2.5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-6.0</artifactId>
-      <version>1.0.0.Final</version>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>6.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian</groupId>
-      <artifactId>arquillian-bom</artifactId>
-      <version>1.1.5.Final</version>
-      <scope>import</scope>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-      <version>1.1.5.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-      <version>1.0.0.CR8</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.jboss.arquillian.container</groupId>
-          <artifactId>arquillian-container-spi</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core</artifactId>
-      <version>1.1.5.Final</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.6.4</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <modules>
+    <!--
+    <module>rar</module>
+    -->
+    <module>ejb</module>
+    <module>war</module>
+    <module>ear</module>
+  </modules>
+
+  <properties>
+    <ear-plugin-version>2.9</ear-plugin-version>
+    <war-plugin-version>2.4</war-plugin-version>
+    <ejb-plugin-version>2.3</ejb-plugin-version>
+    <ejb-spec-version>3.0</ejb-spec-version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.ejb3</groupId>
+        <artifactId>jboss-ejb3-ext-api</artifactId>
+        <version>2.1.0</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-core</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-hazelcast</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>ext-jca-api</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.hazelcast</groupId>
+        <artifactId>hazelcast</artifactId>
+        <version>3.2.5</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.spec</groupId>
+        <artifactId>jboss-javaee-6.0</artifactId>
+        <version>1.0.0.Final</version>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>6.0</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <!--
-          <webappDirectory>/sample/servlet/container/deploy/directory</webappDirectory>
-          -->
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-ear-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <defaultLibBundleDir>lib</defaultLibBundleDir>
-        </configuration>
-      </plugin>
-    </plugins>  <!--
+    <pluginManagement>
       <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${war-plugin-version}</version>
+          <configuration>
+            <packagingExcludes>WEB-INF/lib/ext-jca-3.0.0-SNAPSHOT.jar</packagingExcludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-ejb-plugin</artifactId>
+          <version>${ejb-plugin-version}</version>
+          <configuration>
+            <ejbVersion>${ejb-spec-version}</ejbVersion>
+            <archive>
+              <manifestEntries>
+                <Dependency>deployment.ext-jca-adapter-3.0.0-SNAPSHOT.rar</Dependency>
+              </manifestEntries>
+              <manifest>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+        <!--
         <plugin>
           <artifactId>maven-rar-plugin</artifactId>
           <version>2.4</version>
           <executions>
             <execution>
-              <id>rar</id>
               <goals>
                 <goal>rar</goal>
               </goals>
-              <phase>package</phase>
             </execution>
           </executions>
           <configuration>
-            <finalName>ext-jca-adapter</finalName>
-            <includeJar>true</includeJar>
           </configuration>
         </plugin>
+        -->
       </plugins>
-      -->
+    </pluginManagement>
   </build>
 </project>

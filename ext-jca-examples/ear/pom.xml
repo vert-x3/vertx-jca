@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.vertx</groupId>
+    <artifactId>ext-jca-examples</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>ext-jca-examples-app</artifactId>
+  <packaging>ear</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>ext-jca-examples-web</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>ext-jca-examples-ejb</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>ext-jca-adapter</artifactId>
+      <version>${project.version}</version>
+      <type>rar</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+   <finalName>ext-jca-examples-app</finalName>
+    <plugins>
+       <!--Ear plugin -creating the ear - watch out skinny WARS!-->
+        <plugin>
+          <artifactId>maven-ear-plugin</artifactId>
+          <version>2.9.1</version>
+          <configuration>
+            <earSourceDirectory>../target</earSourceDirectory>
+            <finalName>ext-jca-examples-app</finalName>
+            <defaultLibBundleDir>lib</defaultLibBundleDir>
+            <skinnyWars>true</skinnyWars>
+            <modules>
+              <webModule>
+                <groupId>io.vertx</groupId>
+                <artifactId>ext-jca-examples-web</artifactId>
+              </webModule>
+              <rarModule>
+                <groupId>io.vertx</groupId>
+                <artifactId>ext-jca-adapter</artifactId>
+              </rarModule>
+            </modules>
+            <version>6</version>
+          </configuration>
+        </plugin>
+     </plugins>
+  </build>
+
+</project>

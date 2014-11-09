@@ -27,6 +27,16 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
+import io.vertx.resourceadapter.VertxConnection;
+import io.vertx.resourceadapter.VertxConnectionFactory;
+import io.vertx.resourceadapter.impl.VertxConnectionFactoryImpl;
+import io.vertx.resourceadapter.impl.VertxConnectionImpl;
+import io.vertx.resourceadapter.impl.VertxManagedConnection;
+import io.vertx.resourceadapter.impl.VertxManagedConnectionFactory;
+import io.vertx.resourceadapter.impl.VertxPlatformConfiguration;
+import io.vertx.resourceadapter.impl.VertxPlatformFactory;
+import io.vertx.resourceadapter.impl.VertxResourceAdapter;
+import io.vertx.resourceadapter.impl.WrappedEventBus;
 
 import java.util.UUID;
 

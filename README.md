@@ -1,7 +1,7 @@
-JCA Resource Adaptor for Vert.x
+JCA Resource Adapter for Vert.x 3.x
 ======================
 
-JCA Adaptor for Vertx to interaction between JavaEE application server and Vertx cluster.
+JCA adapter for Vertx to interaction between JavaEE application server and Vertx 3.x cluster.
 
 Overview
 ------
@@ -21,12 +21,12 @@ Maven dependency of this adapter:
 
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;jca-adaptor&lt;/artifactId&gt;
+    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
     &lt;version&gt;1.0.3&lt;/version&gt;
   &lt;/dependency&gt;
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;jca-adaptor&lt;/artifactId&gt;
+    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
     &lt;version&gt;1.0.3&lt;/version&gt;
     &lt;type&gt;rar&lt;/type&gt;
   &lt;/dependency&gt;
@@ -101,7 +101,7 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
                    @ActivationConfigProperty(propertyName = "clusterHost", propertyValue = "localhost"),
                    @ActivationConfigProperty(propertyName = "clusterPort", propertyValue = "0"),
                    })
-@ResourceAdapter("jca-adaptor-1.0.3.rar")
+@ResourceAdapter("jca-adapter-1.0.3.rar")
 public class VertxMonitor implements VertxListener {
 
    private Logger logger = Logger.getLogger(VertxMonitor.class.getName());
@@ -192,7 +192,7 @@ Follow the steps below to deploy the resource adapter to WildFly application ser
 
    * Deploy the .rar file
 
-> WILDFLY-HOME/bin/jboss-cli.sh --connect --command="deploy ra/build/libs/jca-adaptor-1.0.3.rar"
+> WILDFLY-HOME/bin/jboss-cli.sh --connect --command="deploy ra/build/libs/jca-adapter-1.0.3.rar"
 > WILDFLY-HOME/bin/jboss-cli.sh --connect --file=build/etc/wildfly-ra-sample.cli
 
 Jenkins
@@ -209,6 +209,6 @@ For examples, please refer to this [document](https://github.com/gaol/vertx-reso
 
 
 
-If you get any issues or suggestions, you are appreciated to share the idea by firing an issue [here](https://github.com/vert-x/jca-adaptor/issues/new)
+If you get any issues or suggestions, you are appreciated to share the idea by firing an issue [here](https://github.com/vert-x/jca-adapter/issues/new)
 
 Have fun!

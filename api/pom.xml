@@ -6,12 +6,12 @@
 
   <parent>
     <groupId>io.vertx</groupId>
-    <artifactId>ext-jca</artifactId>
+    <artifactId>vertx-jca</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
   <groupId>io.vertx</groupId>
-  <artifactId>ext-jca-api</artifactId>
+  <artifactId>vertx-jca-api</artifactId>
   <version>3.0.0-SNAPSHOT</version>
 
   <dependencies>

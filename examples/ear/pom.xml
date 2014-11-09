@@ -6,36 +6,36 @@
 
   <parent>
     <groupId>io.vertx</groupId>
-    <artifactId>ext-jca-examples</artifactId>
+    <artifactId>vertx-jca-examples</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ext-jca-examples-app</artifactId>
+  <artifactId>vertx-jca-examples-app</artifactId>
   <packaging>ear</packaging>
 
   <dependencies>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>ext-jca-examples-web</artifactId>
+      <artifactId>vertx-jca-examples-web</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>ext-jca-examples-ejb</artifactId>
+      <artifactId>vertx-jca-examples-ejb</artifactId>
       <version>${project.version}</version>
       <type>ejb</type>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>ext-jca-adapter</artifactId>
+      <artifactId>vertx-jca-adapter</artifactId>
       <version>${project.version}</version>
       <type>rar</type>
     </dependency>
   </dependencies>
 
   <build>
-   <finalName>ext-jca-examples-app</finalName>
+   <finalName>vertx-jca-examples-app</finalName>
     <plugins>
        <!--Ear plugin -creating the ear - watch out skinny WARS!-->
         <plugin>
@@ -43,17 +43,17 @@
           <version>2.9.1</version>
           <configuration>
             <earSourceDirectory>../target</earSourceDirectory>
-            <finalName>ext-jca-examples-app</finalName>
+            <finalName>vertx-jca-examples-app</finalName>
             <defaultLibBundleDir>lib</defaultLibBundleDir>
             <skinnyWars>true</skinnyWars>
             <modules>
               <webModule>
                 <groupId>io.vertx</groupId>
-                <artifactId>ext-jca-examples-web</artifactId>
+                <artifactId>vertx-jca-examples-web</artifactId>
               </webModule>
               <rarModule>
                 <groupId>io.vertx</groupId>
-                <artifactId>ext-jca-adapter</artifactId>
+                <artifactId>vertx-jca-adapter</artifactId>
               </rarModule>
             </modules>
             <version>6</version>

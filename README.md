@@ -1,6 +1,7 @@
 JCA Resource Adapter for Vert.x 3.x
+===
 
-JCA adapter for Vertx to interaction between JavaEE application server and Vertx 3.x cluster.
+A JCA 1.6 compliant adapter for allowing for the integration of a Vert.x 3.x cluster with a JEE compliant application server.
 
 Overview
 ------
@@ -21,7 +22,7 @@ Maven dependency of this adapter:
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;
     &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
-    &lt;version&gt;1.0.3&lt;/version&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
   &lt;/dependency&gt;
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;

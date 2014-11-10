@@ -1,45 +1,24 @@
 JCA Resource Adapter for Vert.x 3.x
 ===
 
-A JCA 1.6 compliant adapter allowing for the integration of the Vert.x 3.x runtime with a JEE compliant application server.
+This project provides a [JCA](http://en.wikipedia.org/wiki/Java_EE_Connector_Architecture) version 1.6 compliant adapter allowing for the integration of the [Vertx.x](http://vertx.io) runtime with a JEE compliant application server. 
+
+The Vert.x JCA adapter uses and included Vert.x version 3.0.0-SNAPSHOT which is currently under active development.
+
+**Note**
+Currently the [Wildfly Application Server](http://wildfly.org) is the only JEE application platform that has been tested. The adapter has been tested with version 8.1 which is the latest released version. 
 
 Overview
 ------
 
-The idea of the resource adapter is try to start an embedded Vertx within the JavaEE application server, then expose the Vertx
-distributed event bus and shared data as JCA components.
+The general purpose of a JCA resource adapter is to provide connectivity to an Enterprise Information System (EIS) from a JEE application server. Specifically, the Vert.x JCA adapter provides both outbound and inbound connectivy with a Vert.x instance.
 
-It supports both outbound and inbound vertx communication.
-
-
-Maven Dependency
+Outbound Connectivity
 ------
 
-Maven dependency of this adapter:
+An application component (e.g Servlet, EJB), can send messages to a Vert.x instance.
 
-<pre>
-
-  &lt;dependency&gt;
-    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
-    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
-  &lt;/dependency&gt;
-  &lt;dependency&gt;
-    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
-    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
-    &lt;type&gt;rar&lt;/type&gt;
-  &lt;/dependency&gt;
-
-</pre>
-
-Outbound communication
-------
-
-An application component like a web application(a .war), an ejb instance can send message to the Vertx cluster using outbound communication.
-
-Typical usage is try to get the <b>org.vertx.java.resourceadapter.VertxConnectionFactory</b> using a JNDI lookup, or inject the resource using CDI,
-then gets one <b>org.vertx.java.resourceadapter.VertxConnection</b> instance, then you can get the Vertx <b>EventBus</b> to send messages.
+Usage:
 
 <pre>
 
@@ -70,12 +49,12 @@ finally
 }
 </pre>
 
-   * NOTE: always call <b>io.vertx.resourceadapter.VertxConnection.close()</b> when you does not need the connection anymore, otherwise the connection pool will be full very soon.
+   * NOTE: as with any JCA resource, always call the close() method when your work is complete to allow the connection to be returned to the pool. This will **not** close the underly Vert.x instance. Please see the JCA specification for my details.
 
-Inbound communication
+Inbound Connectivity
 ------
 
-Usually a MDB is the client which receives inbound communication from a Vert.x cluster.
+Since the JCA 1.5 specification, inbound connectivity is provided via a listener interface which can be implemented by a JEE Message Driven Bean (MDB). As opposed to the default JMS listener type, the Vert.x JCA listener interface allows an MDB to receive messages from a Vert.x address. 
 
 The end point of the MDB implements interface: <b>io.vertx.resourceadapter.inflow.VertxListener</b>.
 
@@ -127,13 +106,12 @@ public class VertxMonitor implements VertxListener {
 
 </pre>
 
-
-Now, you can send a message in your Vert.x runtime to address: <b>inbound-address</b>, and the MDB will get notified.
+Note, the Java annotations used. Similarly, an EJB and JEE application server dsscriptor could also be used, exclusively, or in conjunction with annotations. Please see the EJB 3.0 specification for further details. 
 
 Configuration
 -------
 
-The configuration of outbound and inbound are almost the same, they are:
+The configuration for outbound and inbound connectivity are almost the same:
 
    * <b>clusterHost</b>
      * Type: java.lang.String
@@ -158,33 +136,60 @@ The configuration of outbound and inbound are almost the same, they are:
      * Not null
      * <b>address</b> specifies in which vertx event bus address the Endpoint(MDB) listen.
 
+Build, Package, Test, Installation
+-------
+The Vert.x JCA adapter reuires [Apache Maven](http://maven.apache.org) to compile, package and install the adapter:
+
+For the impatient
+
+`mvn install`
+
+This will build, package and install the Vert.x JCA adapter to your local repository as a JEE compliant RAR archive. This does **not** deploy the adapter to the JEE runtime environment.
+
+The resultant JEE archive can be found at ./rar/target/vertx-jca-adapter-<version.rar.
+
+The above command will also run the JUnit tests. Being that the Vert.x JCA adapter is a JEE component, a JEE compliant runtime environemtn is required to adequately test the adapter. For our purposes, the project uses [Arquillian](http://arquillian.org) and an [IronJacamar](http://www.ironjacamar.org) embedded container to provide the testing runtime environment. For more information, please see the respective documentation for each project.
+
+Deployment
+---
+TODO classloading issues in Wildfly need to be addressed for more here
+
+Maven Dependency
+------
+
+In order for projects to consume the Vert.x JCA adapter, a Maven dependency needs to be added to your pom.xml, Ivy configuration file etc:
+
+<pre>
+
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
+    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
+    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;rar&lt;/type&gt;
+  &lt;/dependency&gt;
+
+</pre>
+
 
 Credits
 -------
 
-[IronJacamar](http://www.ironjacamar.org/) is the top lead JCA implementation in the industry, it supports JCA 1.0/1.5/1.6/1.7, and is adopted by [WildFly](http://www.wildfly.org/) application server.
+[IronJacamar](http://www.ironjacamar.org/) is an open source JCA implementation and standalone environment. IronJacamar supports JCA specification level 1.0/1.5/1.6/1.7, and is adopted by [WildFly](http://www.wildfly.org/) application server for JCA compliance.
 
-This resource adapter uses IronJacamar as the development and test environment.
+A special thanks to Lin Gao for his original work on the Vert.x JCA adapter.  For those interested, his original implementation can be found at [his original Git repository](https://github.com/vert-x/jca-adaptor).
 
-A special thanks to Lin Gao for his original work on the Vert.x JCA adapter. He paved the way. For those interested, his original implementation can be found at [his original Git repository](https://github.com/vert-x/jca-adaptor).
-
-
-
-Building
--------
-To build the adapter simply type
-
-mvn package
-
-This will result in the adapter being built to ./target/
-
-Deploy to Wildfly
--------
-TODO
+He paved the way.
 
 Examples
 -------
-TODO
+The ./examples directory contains a complete JEE application example that can be configured and deployed to the WildFly environment. Please see the README.md file in the ./examples directory.
 
-Have fun!
+Contributing
+---
+As with most open source projects, any contributions are **always** encouraged and welcome. While seemingly complex, the JCA specification and implementation are not insurmountable and can provide unique and interesting ways for development solutions. Simiarly, Vert.x is a asynchoronous application platform providing a new paradigm for [Reactive](http://www.reactivemanifesto.org) based design, development and deployment.
 

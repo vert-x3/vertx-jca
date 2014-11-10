@@ -10,9 +10,6 @@
   <packaging>pom</packaging>
 
   <modules>
-    <!--
-    <module>rar</module>
-    -->
     <module>ejb</module>
     <module>war</module>
     <module>ear</module>
@@ -23,6 +20,7 @@
     <war-plugin-version>2.4</war-plugin-version>
     <ejb-plugin-version>2.3</ejb-plugin-version>
     <ejb-spec-version>3.0</ejb-spec-version>
+    <wildfly-plugin-version>1.0.2.Final</wildfly-plugin-version>
   </properties>
 
   <dependencyManagement>
@@ -106,22 +104,29 @@
             </archive>
           </configuration>
         </plugin>
-        <!--
         <plugin>
-          <artifactId>maven-rar-plugin</artifactId>
-          <version>2.4</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>rar</goal>
-              </goals>
-            </execution>
-          </executions>
+          <groupId>org.wildfly.plugins</groupId>
+          <artifactId>wildfly-maven-plugin</artifactId>
+          <version>${wildfly-plugin-version}</version>
           <configuration>
+            <skip>true</skip>
           </configuration>
         </plugin>
-        -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>templating-maven-plugin</artifactId>
+          <version>1.0-alpha-3</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jboss</id>
+      <name>JBoss Nexus</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public</url>
+    </pluginRepository>
+  </pluginRepositories>
+
 </project>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -10,6 +9,13 @@
     <artifactId>vertx-jca-examples</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
+
+  <properties>
+    <ear.name>vertx-jca-examples-app.ear</ear.name>
+    <rar.name>vertx-jca-adapter</rar.name>
+    <rar.version>3.0.0-SNAPSHOT</rar.version>
+    <rar.file.name>${rar.name}-${rar.version}.rar</rar.file.name>
+  </properties>
 
   <artifactId>vertx-jca-examples-ejb</artifactId>
   <packaging>ejb</packaging>
@@ -42,19 +48,46 @@
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>templating-maven-plugin</artifactId>
+        <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>filter-src</id>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
             <goals>
-              <goal>filter-sources</goal>
+              <goal>add-source</goal>
             </goals>
             <configuration>
-              <useDefaultDelimiters>false</useDefaultDelimiters>
-              <delimiters>
-                <delimiter>!*!</delimiter>
-              </delimiters>
+              <sources>
+                <source>${project.build.directory}/generated-sources</source>
+              </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <echo>Generating sources via Ant!</echo>
+                <copy todir="${basedir}/target/classes/">
+                  <fileset dir="${basedir}/src/main/java">
+                    <include name="**/META-INF/jboss-ejb3.xml"/>
+                  </fileset>
+                  <filterset>
+                    <filter token="ear.name" value="${ear.name}"/>
+                    <filter token="rar.file.name" value="${rar.file.name}"/>
+                  </filterset>
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

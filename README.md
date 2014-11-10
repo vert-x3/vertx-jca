@@ -163,12 +163,12 @@ In order for projects to consume the Vert.x JCA adapter, a Maven dependency need
 
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
+    &lt;artifactId&gt;vertx-jca-adapter&lt;/artifactId&gt;
     &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
   &lt;/dependency&gt;
   &lt;dependency&gt;
     &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;jca-adapter&lt;/artifactId&gt;
+    &lt;artifactId&gt;vertx-jca-adapter&lt;/artifactId&gt;
     &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
     &lt;type&gt;rar&lt;/type&gt;
   &lt;/dependency&gt;

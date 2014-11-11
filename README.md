@@ -3,7 +3,7 @@ JCA Resource Adapter for Vert.x 3.x
 
 This project provides a [JCA](http://en.wikipedia.org/wiki/Java_EE_Connector_Architecture) version 1.6 compliant adapter allowing for the integration of the [Vertx.x](http://vertx.io) runtime with a JEE compliant application server. 
 
-The Vert.x JCA adapter uses and included Vert.x version 3.0.0-SNAPSHOT which is currently under active development.
+The Vert.x JCA adapter uses and included Vert.x version 3.0.0-SNAPSHOT which is currently under active [development](https://github.com/eclipse/vert.x).
 
 **Note**
 Currently the [Wildfly Application Server](http://wildfly.org) is the only JEE application platform that has been tested. The adapter has been tested with version 8.1 which is the latest released version. 
@@ -140,7 +140,14 @@ Build, Package, Test, Installation
 -------
 The Vert.x JCA adapter reuires [Apache Maven](http://maven.apache.org) to compile, package and install the adapter:
 
-For the impatient
+The Vert.x JCA adapter requires the installation of Vert.x 3.0.0-SNAPSHOT. Being that this is a development branch, you will need to install this manually. Please see
+
+[https://github.com/eclipse/vert.x
+](http://https://github.com/eclipse/vert.x)
+
+for instructions in building and installing the environment. 
+
+For the Vert.x JCA adapter execute
 
 `mvn install`
 

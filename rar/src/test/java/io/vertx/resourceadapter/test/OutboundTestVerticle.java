@@ -32,11 +32,10 @@ import io.vertx.core.eventbus.Message;
 public class OutboundTestVerticle extends AbstractVerticle {
 
   public void start() {
-    this.vertx.eventBus().consumer("outbound-address")
-        .handler((Message<Object> msg) -> {
-          String string = (String) msg.body();
-          if (string != null && string.length() > 0) {
-            msg.reply("Hello " + string + " from Outbound");
+    this.vertx.eventBus().consumer("outbound-address").handler((Message<Object> msg) -> {          
+          String string = (String) msg.body();          
+          if (string != null && string.length() > 0) {          
+            this.vertx.eventBus().send("inbound-address", "Hello " + string + " from Outbound");
           }
         });
 

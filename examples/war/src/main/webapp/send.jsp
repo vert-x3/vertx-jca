@@ -14,7 +14,7 @@
 	   ctx = new javax.naming.InitialContext();
 	   io.vertx.resourceadapter.VertxConnectionFactory connFactory = (io.vertx.resourceadapter.VertxConnectionFactory)ctx.lookup(jndiName);
 	   conn = connFactory.getVertxConnection();
-	   conn.eventBus().send(address, message);
+	   conn.vertxEventBus().send(address, message);
            out.println("OK");
            out.flush();
 	}

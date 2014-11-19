@@ -21,13 +21,12 @@
  */
 package io.vertx.resourceadapter.impl;
 
+import io.vertx.resourceadapter.VertxConnection;
+import io.vertx.resourceadapter.VertxEventBus;
+
 import java.util.logging.Logger;
 
 import javax.resource.ResourceException;
-
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.shareddata.SharedData;
-import io.vertx.resourceadapter.VertxConnection;
 
 /**
  * VertxPlatformImpl
@@ -37,8 +36,7 @@ import io.vertx.resourceadapter.VertxConnection;
 public class VertxConnectionImpl implements VertxConnection {
 
   /** The logger */
-  private static Logger log = Logger.getLogger(VertxConnectionImpl.class
-      .getName());
+  private static Logger log = Logger.getLogger(VertxConnectionImpl.class.getName());
 
   /** ManagedConnection **/
   private VertxManagedConnection mc;
@@ -59,10 +57,10 @@ public class VertxConnectionImpl implements VertxConnection {
    *              Thrown if a connection can't be obtained
    */
   @Override
-  public EventBus eventBus() throws ResourceException {
+  public VertxEventBus vertxEventBus() throws ResourceException {
     log.finest("getConnection()");
     if (this.mc != null) {
-      return this.mc.getEventBus();
+      return this.mc.getVertxEventBus();
     }
     throw new ResourceException("Vertx Managed Connection has been closed.");
   }
@@ -71,14 +69,6 @@ public class VertxConnectionImpl implements VertxConnection {
   public void close() throws ResourceException {
     this.mc.closeHandle(this);
     this.mc = null;
-  }
-
-  @Override
-  public SharedData getSharedData() throws ResourceException {
-    if (this.mc != null) {
-      return this.mc.getSharedData();
-    }
-    throw new ResourceException("Vertx Managed Connection has been closed.");
   }
 
 }

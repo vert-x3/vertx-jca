@@ -44,9 +44,7 @@ public class VertxConnectionManager implements ConnectionManager {
     for (ManagedConnection conn : connections) {
       try {
         conn.destroy();
-      } catch (Throwable e) {
-
-      }
+      } catch (Throwable ignore) {}
     }
   }
 

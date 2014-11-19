@@ -21,6 +21,10 @@
  */
 package io.vertx.resourceadapter.impl;
 
+import io.vertx.core.Vertx;
+import io.vertx.core.shareddata.SharedData;
+import io.vertx.resourceadapter.VertxEventBus;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,10 +42,6 @@ import javax.resource.spi.ManagedConnection;
 import javax.resource.spi.ManagedConnectionMetaData;
 import javax.security.auth.Subject;
 import javax.transaction.xa.XAResource;
-
-import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.shareddata.SharedData;
 
 /**
  * VertxManagedConnection
@@ -261,7 +261,7 @@ public class VertxManagedConnection implements ManagedConnection, VertxHolder {
     return new VertxManagedConnectionMetaData();
   }
 
-  EventBus getEventBus() {
+  VertxEventBus getVertxEventBus() {
     return new WrappedEventBus(vertx.eventBus());
   }
 

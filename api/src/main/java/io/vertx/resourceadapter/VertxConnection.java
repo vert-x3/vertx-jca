@@ -23,9 +23,6 @@ package io.vertx.resourceadapter;
 
 import javax.resource.ResourceException;
 
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.shareddata.SharedData;
-
 /**
  * VertxPlatform represents a Vert.x platform.
  *
@@ -42,17 +39,7 @@ public interface VertxConnection
     * @return EventBus instance
     * @exception ResourceException Thrown if a connection can't be obtained
     */
-   public EventBus eventBus() throws ResourceException;
-
-   /**
-    * Gets shared data from Vert.x platform.
-    * <p>
-    * <b>NOTE: Only SharedData in local node is supported now!</b>
-    *
-    * @return the SharedData
-    * @throws ResourceException Thrown if can't get the shared data
-    */
-   public SharedData getSharedData() throws ResourceException;
+   public VertxEventBus vertxEventBus() throws ResourceException;
 
    /**
     * Closes the connection.
@@ -64,5 +51,6 @@ public interface VertxConnection
     * @throws ResourceException Thrown if the connection failed close.
     */
    public void close() throws ResourceException;
+   
 
 }

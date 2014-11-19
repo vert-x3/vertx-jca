@@ -22,13 +22,11 @@
 package io.vertx.resourceadapter.test;
 
 import static org.junit.Assert.assertNotNull;
-
-import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.resourceadapter.VertxConnection;
 import io.vertx.resourceadapter.VertxConnectionFactory;
+import io.vertx.resourceadapter.VertxEventBus;
 import io.vertx.resourceadapter.impl.VertxConnectionFactoryImpl;
 import io.vertx.resourceadapter.impl.VertxConnectionImpl;
 import io.vertx.resourceadapter.impl.VertxManagedConnection;
@@ -39,6 +37,7 @@ import io.vertx.resourceadapter.impl.VertxResourceAdapter;
 import io.vertx.resourceadapter.impl.WrappedEventBus;
 
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.Resource;
 
@@ -48,7 +47,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.ResourceAdapterArchive;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,14 +58,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ConnectorTestCase {
   private static String deploymentName = "ConnectorTestCase";
-
-  private boolean testGetConnectionCompleted = false;
-
-  @Before
-  public void setUp() {
-//    System.setProperty("vertx.clusterManagerFactory",
-//        FakeClusterManagerFactory.class.getName());
-  }
 
   /**
    * Define the deployment
@@ -93,10 +83,6 @@ public class ConnectorTestCase {
   /** Resource */
   @Resource(mappedName = "java:/eis/VertxConnectionFactory")
   private VertxConnectionFactory connectionFactory;
-
-  @Resource(mappedName = "java:/eis/VertxConnectionFactory")
-  private VertxConnectionFactory connectionFactory2;
-
   private Vertx vertx;
 
   /**
@@ -107,9 +93,10 @@ public class ConnectorTestCase {
    */
   @Test
   public void testGetConnection() throws Throwable {
+    
     assertNotNull(connectionFactory);
 
-    final EventBus eventBus = connectionFactory.getVertxConnection().eventBus();
+    final VertxEventBus eventBus = connectionFactory.getVertxConnection().vertxEventBus();
     assertNotNull(eventBus);
 
     Assert.assertEquals(eventBus.getClass(), WrappedEventBus.class);
@@ -118,47 +105,28 @@ public class ConnectorTestCase {
     config.setClusterHost("localhost");
     config.setClusterPort(0);
 
-    // Vertx has started already.
     VertxPlatformFactory.instance().createVertxIfNotStart(config,
         new VertxPlatformFactory.VertxListener() {
           @Override
           public void whenReady(Vertx vertx) {
             ConnectorTestCase.this.vertx = vertx;
           }
-
         });
     
-    vertx.deployVerticle(OutboundTestVerticle.class.getName());
-//    TestVertxPlatformManager testPlatformManager = new TestVertxPlatformManager(
-//        vertx);
-//    testPlatformManager.deployAndRunVerticle(OutboundTestVerticle.class
-//        .getName());
-    Handler<Message<String>> msg = h -> {
-
-    };
-
-    eventBus.send("outbound-address", "JCA", jx -> {
-
-      String body = (String) jx.result().body();
-
-      try {
-        Assert.assertEquals("Hello JCA from Outbound", body);
-      } finally {
-        testGetConnectionCompleted = true;
-      }
-
+    CountDownLatch latch = new CountDownLatch(1);
+    
+    vertx.deployVerticle(OutboundTestVerticle.class.getName());                
+    vertx.eventBus().<String>consumer("inbound-address").handler((Message<String> msg) -> {        
+        latch.countDown();
+        testCompleted();
     });
-    while (!testGetConnectionCompleted) {
-      Thread.sleep(1000);
-    }
-
-    Assert.assertTrue(this.testGetConnectionCompleted);
-    testCompleted();
+    
+    eventBus.send("outbound-address", "JCA");
+    latch.await();
   }
 
   private void testCompleted() {
-    this.vertx.close();
-    this.vertx = null;
+    this.vertx.close();    
   }
 
 }

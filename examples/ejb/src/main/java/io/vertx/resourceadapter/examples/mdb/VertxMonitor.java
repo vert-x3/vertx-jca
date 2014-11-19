@@ -1,14 +1,12 @@
 package io.vertx.resourceadapter.examples.mdb;
 
+import io.vertx.core.eventbus.Message;
+import io.vertx.resourceadapter.inflow.VertxListener;
+
 import java.util.logging.Logger;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
-
-import org.jboss.ejb3.annotation.ResourceAdapter;
-
-import io.vertx.core.eventbus.Message;
-import io.vertx.resourceadapter.inflow.VertxListener;
 
 /**
  * Message-Driven Bean implementation class for: VertxMonitor
@@ -35,9 +33,8 @@ public class VertxMonitor implements VertxListener {
       logger.info("Body of the message: " + body.toString());
 
       if (message.replyAddress() != null) {
-        message.reply("Hi, Got your message: " + body.toString());
-      }
-      else{
+        message.reply("Hi, Got your message: " + body.toString());        
+      } else{
         logger.info("No reply address for message. Not responding!");
       }
     } else {

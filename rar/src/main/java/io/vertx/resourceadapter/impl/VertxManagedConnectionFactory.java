@@ -21,6 +21,10 @@
  */
 package io.vertx.resourceadapter.impl;
 
+import io.vertx.core.Vertx;
+import io.vertx.resourceadapter.VertxConnection;
+import io.vertx.resourceadapter.VertxConnectionFactory;
+
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Set;
@@ -36,11 +40,6 @@ import javax.resource.spi.ManagedConnectionFactory;
 import javax.resource.spi.ResourceAdapter;
 import javax.resource.spi.ResourceAdapterAssociation;
 import javax.security.auth.Subject;
-
-import io.vertx.core.Vertx;
-import io.vertx.resourceadapter.VertxConnection;
-import io.vertx.resourceadapter.VertxConnectionFactory;
-import io.vertx.resourceadapter.impl.VertxPlatformFactory.VertxListener;
 
 /**
  * The outbound of the resource adapter.
@@ -58,8 +57,7 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
   private static final long serialVersionUID = 1L;
 
   /** The logger */
-  private static Logger log = Logger
-      .getLogger(VertxManagedConnectionFactory.class.getName());
+  private static Logger log = Logger.getLogger(VertxManagedConnectionFactory.class.getName());
 
   /** The resource adapter */
   private ResourceAdapter ra;
@@ -161,6 +159,7 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
    * @return ManagedConnection if resource adapter finds an acceptable match
    *         otherwise null
    */
+  @SuppressWarnings("rawtypes")
   public ManagedConnection matchManagedConnections(Set connectionSet,
       Subject subject, ConnectionRequestInfo cxRequestInfo)
       throws ResourceException {

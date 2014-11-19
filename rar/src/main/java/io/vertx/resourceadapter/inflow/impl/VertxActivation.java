@@ -186,9 +186,7 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
   }
 
   private void tearDown() {
-    // TODO what is the equivalent of unregister?
-    // this.vertx.eventBus().unregisterHandler(this.spec.getAddress(),
-    // this.messageHandler);
+    
     VertxPlatformFactory.instance().removeVertxHolder(this);
     VertxPlatformFactory.instance().stopPlatformManager(this.config);
   }

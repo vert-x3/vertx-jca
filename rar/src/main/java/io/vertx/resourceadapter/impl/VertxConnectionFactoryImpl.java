@@ -29,8 +29,7 @@ public class VertxConnectionFactoryImpl implements VertxConnectionFactory {
   private static final long serialVersionUID = 1L;
 
   /** The logger */
-  private static Logger log = Logger.getLogger(VertxConnectionFactoryImpl.class
-      .getName());
+  private static Logger log = Logger.getLogger(VertxConnectionFactoryImpl.class.getName());
 
   /** Reference */
   private Reference reference;

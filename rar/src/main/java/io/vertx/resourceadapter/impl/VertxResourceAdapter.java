@@ -47,6 +47,7 @@ import javax.transaction.xa.XAResource;
  *
  * @version $Revision: $
  */
+@SuppressWarnings("rawtypes")
 @Connector(reauthenticationSupport = false, displayName = { "Vert.x Resource Adapter" }, description = { "VertxResourceAdapter is the Resource Adapter used to interact with a Vert.x cluster." }, eisType = "vertx", transactionSupport = TransactionSupport.TransactionSupportLevel.NoTransaction)
 public class VertxResourceAdapter implements ResourceAdapter,
     java.io.Serializable {
@@ -57,11 +58,10 @@ public class VertxResourceAdapter implements ResourceAdapter,
   private static final long serialVersionUID = 1130617878526175034L;
 
   /** The logger */
-  private static Logger log = Logger.getLogger(VertxResourceAdapter.class
-      .getName());
+  private static Logger log = Logger.getLogger(VertxResourceAdapter.class.getName());
 
   /** The activations by activation spec */
-  private ConcurrentHashMap<VertxActivationSpec, VertxActivation> activations;
+  private final ConcurrentHashMap<VertxActivationSpec, VertxActivation> activations = new ConcurrentHashMap<>();
 
   private WorkManager workManager;
 
@@ -69,7 +69,6 @@ public class VertxResourceAdapter implements ResourceAdapter,
    * Default constructor
    */
   public VertxResourceAdapter() {
-    this.activations = new ConcurrentHashMap<VertxActivationSpec, VertxActivation>();
   }
 
   /**
@@ -138,18 +137,8 @@ public class VertxResourceAdapter implements ResourceAdapter,
    */
   public void stop() {
     log.finest("stop()");
-    this.workManager = null;
     this.activations.clear();
     VertxPlatformFactory.instance().clear();
-
-    // it seems after stop() is called,
-    // there are still some background threads running on vert.x
-    // waiting for 1 second
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      ;
-    }
   }
 
   /**

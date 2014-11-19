@@ -38,6 +38,7 @@ import io.vertx.resourceadapter.impl.WrappedEventBus;
 
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
@@ -93,40 +94,55 @@ public class ConnectorTestCase {
    */
   @Test
   public void testGetConnection() throws Throwable {
-    
+
     assertNotNull(connectionFactory);
-
-    final VertxEventBus eventBus = connectionFactory.getVertxConnection().vertxEventBus();
+    final VertxEventBus eventBus = connectionFactory.getVertxConnection()
+        .vertxEventBus();
     assertNotNull(eventBus);
-
     Assert.assertEquals(eventBus.getClass(), WrappedEventBus.class);
+
+  }
+
+  private void testCompleted() {
+    vertx.close();
+  }
+
+  @Test
+  public void testSend() throws Exception {
+    
+    VertxConnection vc = connectionFactory.getVertxConnection(); 
+    VertxEventBus eventBus = vc.vertxEventBus();
 
     VertxPlatformConfiguration config = new VertxPlatformConfiguration();
     config.setClusterHost("localhost");
     config.setClusterPort(0);
 
-    VertxPlatformFactory.instance().createVertxIfNotStart(config,
-        new VertxPlatformFactory.VertxListener() {
-          @Override
-          public void whenReady(Vertx vertx) {
-            ConnectorTestCase.this.vertx = vertx;
-          }
-        });
-    
-    CountDownLatch latch = new CountDownLatch(1);
-    
-    vertx.deployVerticle(OutboundTestVerticle.class.getName());                
-    vertx.eventBus().<String>consumer("inbound-address").handler((Message<String> msg) -> {        
-        latch.countDown();
-        testCompleted();
+    VertxPlatformFactory.instance().createVertxIfNotStart(config, ar -> {
+      this.vertx = ar;
     });
-    
-    eventBus.send("outbound-address", "JCA");
-    latch.await();
-  }
 
-  private void testCompleted() {
-    this.vertx.close();    
+    CountDownLatch latch = new CountDownLatch(1);
+
+    vertx.deployVerticle(OutboundTestVerticle.class.getName(), ar -> {
+      if (ar.succeeded()) {
+        latch.countDown();
+      }
+    });
+
+    Assert.assertTrue("Verticle was not deployed", latch.await(5, TimeUnit.SECONDS));
+
+    CountDownLatch consumerLatch = new CountDownLatch(1);
+    
+    vertx.eventBus().<String> consumer("inbound-address")
+        .handler((Message<String> msg) -> {
+          consumerLatch.countDown();          
+     });
+
+    eventBus.send("outbound-address", "JCA");
+    consumerLatch.await();
+    testCompleted();
+    vc.close();
   }
+    
 
 }

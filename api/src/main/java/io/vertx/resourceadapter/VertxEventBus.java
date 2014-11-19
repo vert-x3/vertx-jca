@@ -1,7 +1,6 @@
 package io.vertx.resourceadapter;
 
 import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.streams.WriteStream;
 
 public interface VertxEventBus {
@@ -13,7 +12,7 @@ public interface VertxEventBus {
    */
   VertxEventBus send(String address, Object message);
   
-  <T> VertxEventBus send(String address, Object message, DeliveryOptions options);
+  VertxEventBus send(String address, Object message, DeliveryOptions options);
   
   /**
    * Publish a message
@@ -23,28 +22,7 @@ public interface VertxEventBus {
   VertxEventBus publish(String address, Object message);
 
   VertxEventBus publish(String address, Object message, DeliveryOptions options);
-  
-  /**
-   * Create a message consumer against the specified address. The returned consumer is not yet registered
-   * at the address, registration will be effective when {@link MessageConsumer#handler(io.vertx.core.Handler)}
-   * is called.
-   *
-   * @param address The address that will register it at
-   * @return the event bus message consumer
-   */
-  <T> MessageConsumer<T> consumer(String address);
-
-  /**
-   * Create a local message consumer against the specified address. The handler info won't
-   * be propagated across the cluster. The returned consumer is not yet registered at the
-   * address, registration will be effective when {@link MessageConsumer#handler(io.vertx.core.Handler)}
-   * is called.
-   *
-   * @param address The address to register it at
-   * @return the event bus message consumer
-   */
-  <T> MessageConsumer<T> localConsumer(String address);
-
+    
   /**
    * Create a message sender against the specified address. The returned sender will invoke the {@link #send(String, Object)}
    * method when the stream {@link io.vertx.core.streams.WriteStream#write(Object)} method is called with the sender

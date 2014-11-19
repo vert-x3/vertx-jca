@@ -14,9 +14,6 @@ import java.io.Serializable;
  */
 public class VertxPlatformConfiguration implements Serializable {
 
-  /**
-   * generated serial version UUID
-   */
   private static final long serialVersionUID = -2647099599010357452L;
 
   private Integer clusterPort;
@@ -29,7 +26,7 @@ public class VertxPlatformConfiguration implements Serializable {
    * Timeout in milliseconds waiting for the Vert.x starts up. Default to 30000,
    * 30 seconds
    **/
-  private Long timeout;
+  private Long timeout = 30000L;
 
   /**
    * @return the timeout

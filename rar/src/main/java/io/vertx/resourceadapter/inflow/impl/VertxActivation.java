@@ -49,14 +49,11 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
     VertxHolder {
 
   private static Logger log = Logger.getLogger(VertxActivation.class.getName());
-
-  /** The resource adapter */
+ 
   private VertxResourceAdapter ra;
 
-  /** Activation spec */
   private VertxActivationSpec spec;
 
-  /** The message endpoint factory */
   private MessageEndpointFactory endpointFactory;
 
   private Vertx vertx;
@@ -65,9 +62,6 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
 
   private Handler<Message<Object>> messageHandler;
 
-  /**
-   * Whether delivery is active
-   */
   private final AtomicBoolean deliveryActive = new AtomicBoolean(false);
 
   static {
@@ -77,24 +71,10 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
       throw new RuntimeException(e);
     }
   }
-
-  /**
-   * Constructor
-   * 
-   * @param ra
-   *          VertxResourceAdapter
-   * @param endpointFactory
-   *          MessageEndpointFactory
-   * @param spec
-   *          VertxActivationSpec
-   * @exception ResourceException
-   *              Thrown if an error occurs
-   */
+  
   public VertxActivation(VertxResourceAdapter ra,
       MessageEndpointFactory endpointFactory, VertxActivationSpec spec)
-      throws ResourceException
-
-  {
+      throws ResourceException {
     this.ra = ra;
     this.endpointFactory = endpointFactory;
     this.spec = spec;
@@ -134,13 +114,13 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
   private void setup() {
     String address = this.spec.getAddress();
     try {
-      final MessageEndpoint endPoint = this.endpointFactory
-          .createEndpoint(null);
+      final MessageEndpoint endPoint = endpointFactory.createEndpoint(null);
       this.messageHandler = new Handler<Message<Object>>() {
         public void handle(Message<Object> message) {
           handleMessage(endPoint, message);
         }
       };
+      
       if (this.vertx == null) {
         throw new ResourceException("Vertx platform did not start yet.");
       }
@@ -208,8 +188,8 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
 
     @Override
     public void release() {
-
     }
+  
   }
 
 }

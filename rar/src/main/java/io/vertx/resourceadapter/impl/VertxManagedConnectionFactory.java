@@ -26,9 +26,7 @@ import io.vertx.resourceadapter.VertxConnection;
 import io.vertx.resourceadapter.VertxConnectionFactory;
 
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.resource.ResourceException;
@@ -117,25 +115,7 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
    */
   public ManagedConnection createManagedConnection(Subject subject,
       ConnectionRequestInfo cxRequestInfo) throws ResourceException {
-    VertxPlatformConfiguration config = getVertxPlatformConfig();
-    VertxPlatformFactory.instance().createVertxIfNotStart(config, this);
-    long current = System.currentTimeMillis();
-    while (this.vertx == null) {
-      if (config.getTimeout() != null) {
-        long now = System.currentTimeMillis();
-        if (now - current > config.getTimeout()) {
-          throw new ResourceException("No Vert.x starts up within timeout: "
-              + config.getTimeout() + " milliseconds");
-        }
-      }
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException e) {
-
-      }
-    }
-    log.log(Level.FINEST,
-        "Creating a VertxManagedConnction with a Vertx platform.");
+    VertxPlatformFactory.instance().createVertxIfNotStart(getVertxPlatformConfig(), this);
     return new VertxManagedConnection(this, vertx);
   }
 
@@ -162,22 +142,17 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
   @SuppressWarnings("rawtypes")
   public ManagedConnection matchManagedConnections(Set connectionSet,
       Subject subject, ConnectionRequestInfo cxRequestInfo)
-      throws ResourceException {
-    log.finest("matchManagedConnections()");
-    ManagedConnection result = null;
-    Iterator<?> it = connectionSet.iterator();
-    while (result == null && it.hasNext()) {
-      ManagedConnection mc = (ManagedConnection) it.next();
-      if (mc instanceof VertxManagedConnection) {
-        VertxManagedConnection vertMC = (VertxManagedConnection) mc;
+      throws ResourceException {    
+    
+    for(Object result : connectionSet){
+      if (result instanceof VertxManagedConnection) {
+        VertxManagedConnection vertMC = (VertxManagedConnection) result;
         if (this.equals(vertMC.getManagementConnectionFactory())) {
-          // same MCF represents same Vertx platform
-          result = mc;
-          break;
+          return vertMC;
         }
       }
     }
-    return result;
+    return null;
   }
 
   /*

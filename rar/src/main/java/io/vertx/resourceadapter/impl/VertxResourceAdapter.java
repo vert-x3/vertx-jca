@@ -25,6 +25,7 @@ import io.vertx.resourceadapter.inflow.impl.VertxActivation;
 import io.vertx.resourceadapter.inflow.impl.VertxActivationSpec;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
 import javax.resource.ResourceException;
@@ -61,7 +62,7 @@ public class VertxResourceAdapter implements ResourceAdapter,
   private static Logger log = Logger.getLogger(VertxResourceAdapter.class.getName());
 
   /** The activations by activation spec */
-  private final ConcurrentHashMap<VertxActivationSpec, VertxActivation> activations = new ConcurrentHashMap<>();
+  private final ConcurrentMap<VertxActivationSpec, VertxActivation> activations = new ConcurrentHashMap<>();
 
   private WorkManager workManager;
 

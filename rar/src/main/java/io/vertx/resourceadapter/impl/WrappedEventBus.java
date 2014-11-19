@@ -37,7 +37,7 @@ public class WrappedEventBus implements VertxEventBus {
   }
 
   @Override
-  public <T> VertxEventBus send(String address, Object message,
+  public VertxEventBus send(String address, Object message,
       DeliveryOptions options) {
     this.delegate.send(address, message, options);
     return this;
@@ -54,16 +54,6 @@ public class WrappedEventBus implements VertxEventBus {
       DeliveryOptions options) {
     this.delegate.publish(address, message, options);
     return this;
-  }
-
-  @Override
-  public <T> MessageConsumer<T> consumer(String address) {
-    return this.delegate.consumer(address);
-  }
-
-  @Override
-  public <T> MessageConsumer<T> localConsumer(String address) {
-    return this.delegate.localConsumer(address);
   }
 
   @Override

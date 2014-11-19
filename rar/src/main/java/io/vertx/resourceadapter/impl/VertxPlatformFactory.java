@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,29 +32,26 @@ import com.hazelcast.config.XmlConfigBuilder;
  */
 public class VertxPlatformFactory {
 
-  private static Logger log = Logger.getLogger(VertxPlatformFactory.class.getName());
+  private final static Logger log = Logger.getLogger(VertxPlatformFactory.class.getName());
 
-  private static VertxPlatformFactory INSTANCE = new VertxPlatformFactory();
-
-  public static VertxPlatformFactory instance() {
-    return INSTANCE;
-  }
-
+  private final static VertxPlatformFactory INSTANCE = new VertxPlatformFactory();
+ 
   /**
    * All Vert.x platforms.
    *
    */
-  private Map<String, Vertx> vertxPlatforms = new ConcurrentHashMap<String, Vertx>();
+  private final Map<String, Vertx> vertxPlatforms = new ConcurrentHashMap<String, Vertx>();
 
   /**
    * All Vert.x holders
    */
-  private Set<VertxHolder> vertxHolders = new ConcurrentHashSet<VertxHolder>();
+  private final Set<VertxHolder> vertxHolders = new ConcurrentHashSet<VertxHolder>();
 
-  /**
-   * Default private constructor
-   */
   private VertxPlatformFactory() {}
+
+  public static VertxPlatformFactory instance() {
+    return INSTANCE;
+  }
 
   /**
    * Creates a Vertx if one is not started yet.
@@ -65,20 +63,16 @@ public class VertxPlatformFactory {
    */
   public synchronized void createVertxIfNotStart(final VertxPlatformConfiguration config,
       final VertxListener lifecyleListener) {
+    
     Vertx vertx = this.vertxPlatforms.get(config.getVertxPlatformIdentifier());
 
     if (vertx != null) {
-      log.log(Level.INFO,
-          "Vert.x platform at: " + config.getVertxPlatformIdentifier()
-              + " has been started.");
+      log.log(Level.INFO, "Vert.x platform at: " + config + " has been started.");
       lifecyleListener.whenReady(vertx);
       return;
     }
     try {
-      Integer clusterPort = config.getClusterPort();
-      String clusterHost = config.getClusterHost();
-
-      log.log(Level.INFO, "Vert.x platform started: " + config.getVertxPlatformIdentifier());
+      log.log(Level.INFO, "Vert.x platform started: " + config);
 
       // either the default-cluster.xml in classpath, or the cluster xml file
       // specified by config.getClusterConfigFile()
@@ -88,19 +82,19 @@ public class VertxPlatformFactory {
 
       final CountDownLatch vertxStartCount = new CountDownLatch(1);
       VertxOptions options = new VertxOptions();
-      options.setClusterHost(clusterHost);
-      options.setClusterPort(clusterPort);
+      options.setClusterHost(config.getClusterHost());
+      options.setClusterPort(config.getClusterPort());
       Vertx.vertxAsync(options, ar -> {        
       
         try {          
           if (ar.succeeded()) {
             
-            log.log(Level.INFO, "Vert.x Platform started: " + config.getVertxPlatformIdentifier());
+            log.log(Level.INFO, "Vert.x Platform started: " + config);
             vertxPlatforms.putIfAbsent(config.getVertxPlatformIdentifier(), ar.result());
             lifecyleListener.whenReady(ar.result());
           
           } else if (ar.failed()) {
-            log.log(Level.SEVERE, "Failed to start Vert.x at: " + config.getVertxPlatformIdentifier());
+            log.log(Level.SEVERE, "Failed to start Vert.x at: " + config);
             throw new RuntimeException(ar.cause());
           }
         } finally {
@@ -108,9 +102,12 @@ public class VertxPlatformFactory {
         }
       });
       
-      vertxStartCount.await(); // waiting for the vertx starts up.
-    } catch (Exception exp) {
-      throw new RuntimeException(exp);
+      if(!vertxStartCount.await(config.getTimeout(), TimeUnit.SECONDS)){
+        throw new RuntimeException("Could not start Vert.x in " + config.getTimeout() + "seconds");
+      }    
+    
+    } catch (Exception e) {
+      throw new RuntimeException("Could not start Vert.x", e);
     }
   }
 
@@ -136,22 +133,17 @@ public class VertxPlatformFactory {
    *          the VertxHolder
    */
   public void addVertxHolder(VertxHolder holder) {
-
-    try {
-      Vertx vertx = holder.getVertx();
-      if (vertxPlatforms.containsValue(vertx)) {
-        if (!this.vertxHolders.contains(holder)) {
-          log.log(Level.INFO, "Adding Vertx Holder: " + holder.toString());
-          this.vertxHolders.add(holder);
-        } else {
-          log.log(Level.WARNING, "Vertx Holder: " + holder.toString()
-              + " has been added already.");
-        }
+    
+    Vertx vertx = holder.getVertx();    
+    if (vertxPlatforms.containsValue(vertx)) {
+      if (!this.vertxHolders.contains(holder)) {
+        log.log(Level.INFO, "Adding Vertx Holder: " + holder);
+        this.vertxHolders.add(holder);
       } else {
-        log.log(Level.SEVERE, "Vertx Holder: " + holder.toString()
-            + " is out of management.");
-      }
-    } finally {
+        log.log(Level.WARNING, "Vertx Holder: " + holder + " has been added already.");
+      }    
+    } else {
+      log.log(Level.SEVERE, "Vertx Holder: " + holder + " is out of management.");
     }
   }
 
@@ -163,15 +155,11 @@ public class VertxPlatformFactory {
    */
   public void removeVertxHolder(VertxHolder holder) {
     
-    try {
-      if (this.vertxHolders.contains(holder)) {
-        log.log(Level.INFO, "Removing Vertx Holder: " + holder.toString());
-        this.vertxHolders.remove(holder);
-      } else {
-        log.log(Level.SEVERE, "Vertx Holder: " + holder.toString()
-            + " is out of management.");
-      }
-    } finally {
+    if (this.vertxHolders.contains(holder)) {
+      log.log(Level.INFO, "Removing Vertx Holder: " + holder);
+      this.vertxHolders.remove(holder);
+    } else {
+      log.log(Level.SEVERE, "Vertx Holder: " + holder + " is out of management.");
     }
   }
 
@@ -182,25 +170,26 @@ public class VertxPlatformFactory {
    */
   public void stopPlatformManager(VertxPlatformConfiguration config){
     
-    try {      
+    Vertx vertx = this.vertxPlatforms.get(config.getVertxPlatformIdentifier());      
+    
+    if (vertx != null && isVertxHolded(vertx)) {          
+      log.log(Level.INFO,"Stopping Vert.x: "+ config.getVertxPlatformIdentifier());
+      vertxPlatforms.remove(config.getVertxPlatformIdentifier());
+      CountDownLatch latch = new CountDownLatch(1);
       
-      Vertx vertx = this.vertxPlatforms.get(config.getVertxPlatformIdentifier());      
+      vertx.close(ar -> {                  
+        latch.countDown();
+        if(!ar.succeeded()){
+          log.log(Level.SEVERE, "Could not close vert.x instance");
+        }
+      });
       
-      if (vertx != null && isVertxHolded(vertx)) {          
-        log.log(Level.INFO,"Stopping Vert.x: "+ config.getVertxPlatformIdentifier());
-        vertxPlatforms.remove(config.getVertxPlatformIdentifier());
-        CountDownLatch latch = new CountDownLatch(1);
-        
-        vertx.close(ar -> {          
-          latch.countDown();
-        });
-        
-        try{
-          latch.await();          
-        }catch(Exception ignore){}
+      try{
+        latch.await(1, TimeUnit.SECONDS);          
+      }catch(Exception ignore){
+        log.log(Level.SEVERE, "Could not close vert.x instance.");
       }
-            
-    }finally{}
+    }                
   }
 
   private boolean isVertxHolded(Vertx vertx) {
@@ -219,19 +208,30 @@ public class VertxPlatformFactory {
    */
   void clear() {
 
+    log.log(Level.FINEST, "Closing all Vert.x instances");
     try {    
+      
       for (Map.Entry<String, Vertx> entry : this.vertxPlatforms.entrySet()) {        
-        log.log(Level.INFO, "Closing Vert.x Platform: " + entry.getKey());        
-        CountDownLatch latch = new CountDownLatch(this.vertxPlatforms.entrySet().size());        
-        entry.getValue().close(ar ->{
-          latch.countDown();
+        CountDownLatch latch = new CountDownLatch(this.vertxPlatforms.entrySet().size());                
+        
+        entry.getValue().close(ar ->{                              
+          latch.countDown();                            
+          if(!ar.succeeded()){
+            log.log(Level.SEVERE, "Error is closing Vert.x instance.", ar.cause());
+          }        
         });                
-      }
-      this.vertxPlatforms.clear();
-      this.vertxHolders.clear();
+        
+        if(!latch.await(5, TimeUnit.SECONDS)){
+          log.log(Level.SEVERE, "Timedout waiting for Vert.x close.");          
+        }
+      }          
+      
+      vertxPlatforms.clear();
+      vertxHolders.clear();
     
-    } finally {
-    }
+    }catch(Exception e){
+      log.log(Level.SEVERE, "Error closing Vert.x instance", e.getCause());
+    }   
   }
 
   /**

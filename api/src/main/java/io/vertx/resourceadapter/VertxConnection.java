@@ -31,12 +31,12 @@ import javax.resource.ResourceException;
 public interface VertxConnection
 {
    /**
-    * Get Vert.x distributed EventBus from the Vert.x platform.
+    * Get VertEventBus from the Vert.x platform.
     *
     * <p>
     * <b>NOTE: eventBus().close() method does nothing, it is managed by resource adapter.
     *
-    * @return EventBus instance
+    * @return VertxEventBus instance
     * @exception ResourceException Thrown if a connection can't be obtained
     */
    public VertxEventBus vertxEventBus() throws ResourceException;

@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.vertx.resourceadapter.impl;
 
 import io.vertx.core.eventbus.DeliveryOptions;

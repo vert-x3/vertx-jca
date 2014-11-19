@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.vertx.resourceadapter.impl;
 
 import io.vertx.resourceadapter.VertxConnection;
@@ -25,36 +22,19 @@ import javax.resource.spi.ConnectionManager;
  */
 public class VertxConnectionFactoryImpl implements VertxConnectionFactory {
 
-  /** The serial version UID */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -3548251896235579548L;
 
-  /** The logger */
   private static Logger log = Logger.getLogger(VertxConnectionFactoryImpl.class.getName());
 
-  /** Reference */
   private Reference reference;
 
-  /** ManagedConnectionFactory */
   private VertxManagedConnectionFactory mcf;
 
-  /** ConnectionManager */
   private ConnectionManager connectionManager;
 
-  /**
-   * Default constructor
-   */
   public VertxConnectionFactoryImpl() {
-
   }
 
-  /**
-   * Default constructor
-   * 
-   * @param mcf
-   *          ManagedConnectionFactory
-   * @param cxManager
-   *          ConnectionManager
-   */
   public VertxConnectionFactoryImpl(VertxManagedConnectionFactory mcf,
       ConnectionManager cxManager) {
     this.mcf = mcf;

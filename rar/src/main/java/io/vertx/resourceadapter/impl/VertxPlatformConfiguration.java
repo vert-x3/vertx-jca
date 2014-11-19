@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.vertx.resourceadapter.impl;
 
 import java.io.Serializable;
@@ -22,6 +19,8 @@ public class VertxPlatformConfiguration implements Serializable {
 
   private String clusterConfigFile;
 
+  private boolean clustered;
+  
   /**
    * Timeout in milliseconds waiting for the Vert.x starts up. Default to 30000,
    * 30 seconds
@@ -116,11 +115,14 @@ public class VertxPlatformConfiguration implements Serializable {
     this.clusterConfigFile = clusterConfigFile;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#hashCode()
-   */
+  public boolean isClustered(){
+    return clustered;
+  }
+  
+  public void setClustered(boolean clustered){
+    this.clustered = clustered;
+  }
+  
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -167,9 +169,13 @@ public class VertxPlatformConfiguration implements Serializable {
     if (timeout == null) {
       if (other.timeout != null)
         return false;
-    } else if (!timeout.equals(other.timeout))
+    } else if (!timeout.equals(other.timeout)) {
+      return false;      
+    } else if(clustered != other.isClustered()) {
       return false;
+    }        
+    
     return true;
   }
-
+  
 }

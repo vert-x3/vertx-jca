@@ -40,27 +40,23 @@ import javax.resource.spi.ResourceAdapterAssociation;
 import javax.security.auth.Subject;
 
 /**
- * The outbound of the resource adapter.
+ * The outbound connection of the resource adapter.
  *
  * Each active *-ra.xml deployment may have different vertx platform.
  *
- * @version $Revision: $
+ * 
  */
 @ConnectionDefinition(connectionFactory = VertxConnectionFactory.class, connectionFactoryImpl = VertxConnectionFactoryImpl.class, connection = VertxConnection.class, connectionImpl = VertxConnectionImpl.class)
 public class VertxManagedConnectionFactory extends AbstractJcaBase implements
     ManagedConnectionFactory, ResourceAdapterAssociation,
     VertxPlatformFactory.VertxListener {
 
-  /** The serial version UID */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -4650320398583270937L;
 
-  /** The logger */
   private static Logger log = Logger.getLogger(VertxManagedConnectionFactory.class.getName());
 
-  /** The resource adapter */
   private ResourceAdapter ra;
 
-  /** The logwriter */
   private PrintWriter logwriter;
 
   private Vertx vertx;
@@ -69,7 +65,6 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
    * Default constructor
    */
   public VertxManagedConnectionFactory() {
-
   }
 
   /**
@@ -115,7 +110,7 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
    */
   public ManagedConnection createManagedConnection(Subject subject,
       ConnectionRequestInfo cxRequestInfo) throws ResourceException {
-    VertxPlatformFactory.instance().createVertxIfNotStart(getVertxPlatformConfig(), this);
+    vertx = VertxPlatformFactory.instance().getOrCreateVertx(getVertxPlatformConfig());
     return new VertxManagedConnection(this, vertx);
   }
 

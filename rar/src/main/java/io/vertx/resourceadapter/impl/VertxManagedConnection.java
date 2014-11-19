@@ -1,35 +1,12 @@
-/*
- * IronJacamar, a Java EE Connector Architecture implementation
- * Copyright 2013, Red Hat Inc, and individual contributors
- * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
 package io.vertx.resourceadapter.impl;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.shareddata.SharedData;
 import io.vertx.resourceadapter.VertxEventBus;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.resource.NotSupportedException;
@@ -46,42 +23,27 @@ import javax.transaction.xa.XAResource;
 /**
  * VertxManagedConnection
  *
- * @version $Revision: $
  */
 public class VertxManagedConnection implements ManagedConnection, VertxHolder {
 
-  /** The logger */
-  private static Logger log = Logger.getLogger(VertxManagedConnection.class
-      .getName());
+  private static Logger log = Logger.getLogger(VertxManagedConnection.class.getName());
 
-  /** The logwriter */
   private PrintWriter logwriter;
 
-  /** ManagedConnectionFactory */
   private VertxManagedConnectionFactory mcf;
 
-  /** Listeners */
-  private List<ConnectionEventListener> listeners;
+  private final List<ConnectionEventListener> listeners 
+  = Collections.synchronizedList(new ArrayList<ConnectionEventListener>(1));;
 
-  /** Connection */
   private VertxConnectionImpl vertxConn;
 
-  /** The Vert.x Platform **/
   private final Vertx vertx;
-
-  /**
-   * Default constructor
-   * 
-   * @param mcf
-   *          mcf
-   */
+  
   public VertxManagedConnection(VertxManagedConnectionFactory mcf, Vertx vertx)
       throws ResourceException {
     this.mcf = mcf;
     this.vertx = vertx;
     this.logwriter = null;
-    this.listeners = Collections
-        .synchronizedList(new ArrayList<ConnectionEventListener>(1));
     this.vertxConn = null;
     VertxPlatformFactory.instance().addVertxHolder(this);
   }
@@ -263,11 +225,6 @@ public class VertxManagedConnection implements ManagedConnection, VertxHolder {
 
   VertxEventBus getVertxEventBus() {
     return new WrappedEventBus(vertx.eventBus());
-  }
-
-  SharedData getSharedData() {
-    log.log(Level.INFO, "Only SharedData in local node is supported now!");
-    return this.vertx.sharedData();
   }
 
 }

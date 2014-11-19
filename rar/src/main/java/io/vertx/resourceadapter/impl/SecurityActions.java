@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.vertx.resourceadapter.impl;
 
 import java.security.AccessController;
@@ -13,11 +10,7 @@ import java.security.PrivilegedAction;
  */
 class SecurityActions {
 
-  /**
-   * Default private constructor
-   */
   private SecurityActions() {
-
   }
 
   /**

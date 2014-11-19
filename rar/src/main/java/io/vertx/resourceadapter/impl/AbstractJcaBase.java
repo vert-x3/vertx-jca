@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.vertx.resourceadapter.impl;
 
 import javax.resource.spi.ConfigProperty;
@@ -11,8 +8,7 @@ import javax.resource.spi.ConfigProperty;
  */
 public abstract class AbstractJcaBase {
 
-  /** The vertx platform configuration **/
-  private VertxPlatformConfiguration vertxPlatformConfig = new VertxPlatformConfiguration();
+  private final VertxPlatformConfiguration vertxPlatformConfig = new VertxPlatformConfiguration();
 
   /**
    * @return the clusterPort
@@ -71,7 +67,16 @@ public abstract class AbstractJcaBase {
   public void setTimeout(Long timeout) {
     this.vertxPlatformConfig.setTimeout(timeout);
   }
-
+  
+  @ConfigProperty(defaultValue = "false")
+  public void setClustered(Boolean clustered){
+    this.vertxPlatformConfig.setClustered(clustered);
+  }
+  
+  public Boolean isClustered(){
+    return this.vertxPlatformConfig.isClustered();
+  }
+  
   public VertxPlatformConfiguration getVertxPlatformConfig() {
     return this.vertxPlatformConfig;
   }

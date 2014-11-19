@@ -26,11 +26,11 @@ import javax.transaction.xa.XAResource;
  */
 public class VertxManagedConnection implements ManagedConnection, VertxHolder {
 
-  private static Logger log = Logger.getLogger(VertxManagedConnection.class.getName());
+  private static final Logger log = Logger.getLogger(VertxManagedConnection.class.getName());
 
   private PrintWriter logwriter;
 
-  private VertxManagedConnectionFactory mcf;
+  private final VertxManagedConnectionFactory mcf;
 
   private final List<ConnectionEventListener> listeners 
   = Collections.synchronizedList(new ArrayList<ConnectionEventListener>(1));;

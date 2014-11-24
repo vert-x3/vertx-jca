@@ -24,6 +24,7 @@ package io.vertx.resourceadapter.impl;
 import io.vertx.core.Vertx;
 import io.vertx.resourceadapter.VertxConnection;
 import io.vertx.resourceadapter.VertxConnectionFactory;
+import io.vertx.resourceadapter.impl.VertxPlatformFactory.VertxListener;
 
 import java.io.PrintWriter;
 import java.util.Set;
@@ -48,8 +49,7 @@ import javax.security.auth.Subject;
  */
 @ConnectionDefinition(connectionFactory = VertxConnectionFactory.class, connectionFactoryImpl = VertxConnectionFactoryImpl.class, connection = VertxConnection.class, connectionImpl = VertxConnectionImpl.class)
 public class VertxManagedConnectionFactory extends AbstractJcaBase implements
-    ManagedConnectionFactory, ResourceAdapterAssociation,
-    VertxPlatformFactory.VertxListener {
+    ManagedConnectionFactory, ResourceAdapterAssociation, VertxListener{
 
   private static final long serialVersionUID = -4650320398583270937L;
 
@@ -110,13 +110,8 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
    */
   public ManagedConnection createManagedConnection(Subject subject,
       ConnectionRequestInfo cxRequestInfo) throws ResourceException {
-    vertx = VertxPlatformFactory.instance().getOrCreateVertx(getVertxPlatformConfig());
-    return new VertxManagedConnection(this, vertx);
-  }
-
-  @Override
-  public void whenReady(Vertx vertx) {
-    this.vertx = vertx;
+    VertxPlatformFactory.instance().getOrCreateVertx(getVertxPlatformConfig(), this);
+    return new VertxManagedConnection(this, this.vertx);
   }
 
   /**
@@ -229,6 +224,12 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
   public void setResourceAdapter(ResourceAdapter ra) {
     log.finest("setResourceAdapter()");
     this.ra = ra;
+  }
+  @Override
+  public void whenReady(Vertx vertx) {
+    if(vertx != null){
+      this.vertx = vertx;      
+    }
   }
 
 }

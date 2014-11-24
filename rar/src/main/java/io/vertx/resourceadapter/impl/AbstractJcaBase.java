@@ -59,15 +59,6 @@ public abstract class AbstractJcaBase {
     this.vertxPlatformConfig.setClusterConfigFile(clusterConfigFile);
   }
 
-  public Long getTimeout() {
-    return this.vertxPlatformConfig.getTimeout();
-  }
-
-  @ConfigProperty(defaultValue = "30000")
-  public void setTimeout(Long timeout) {
-    this.vertxPlatformConfig.setTimeout(timeout);
-  }
-  
   @ConfigProperty(defaultValue = "false")
   public void setClustered(Boolean clustered){
     this.vertxPlatformConfig.setClustered(clustered);

@@ -15,8 +15,12 @@ public class OutboundTestVerticle extends AbstractVerticle {
 
   public void start() {
 
-    this.vertx.eventBus().consumer("outbound-address").handler((Message<Object> msg) -> {
-              
+    this.vertx
+        .eventBus()
+        .consumer("outbound-address")
+        .handler(
+            (Message<Object> msg) -> {
+
               String string = (String) msg.body();
               if (string != null && string.length() > 0) {
 
@@ -29,7 +33,7 @@ public class OutboundTestVerticle extends AbstractVerticle {
                 }
 
               }
-     });
-   
+            });
+
   }
 }

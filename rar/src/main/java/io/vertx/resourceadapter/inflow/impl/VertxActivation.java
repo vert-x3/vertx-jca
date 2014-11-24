@@ -23,24 +23,23 @@ import io.vertx.resourceadapter.inflow.VertxListener;
  * VertxActivation
  *
  */
-public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
-    VertxHolder {
+public class VertxActivation<T> implements VertxPlatformFactory.VertxListener, VertxHolder {
 
-  private static Logger log = Logger.getLogger(VertxActivation.class.getName());
+  private static final Logger log = Logger.getLogger(VertxActivation.class.getName());
  
-  private VertxResourceAdapter ra;
+  private final VertxResourceAdapter ra;
 
-  private VertxActivationSpec spec;
+  private final VertxActivationSpec spec;
 
-  private MessageEndpointFactory endpointFactory;
+  private final MessageEndpointFactory endpointFactory;
 
-  private Vertx vertx;
-
-  private VertxPlatformConfiguration config;
+  private final VertxPlatformConfiguration config;
 
   private Handler<Message<Object>> messageHandler;
 
   private final AtomicBoolean deliveryActive = new AtomicBoolean(false);
+
+  private Vertx vertx;
 
   static {
     try {
@@ -50,8 +49,7 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
     }
   }
   
-  public VertxActivation(VertxResourceAdapter ra,
-      MessageEndpointFactory endpointFactory, VertxActivationSpec spec)
+  public VertxActivation(VertxResourceAdapter ra, MessageEndpointFactory endpointFactory, VertxActivationSpec spec) 
       throws ResourceException {
     this.ra = ra;
     this.endpointFactory = endpointFactory;
@@ -86,7 +84,7 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener,
   public void start() throws ResourceException {
     
     if (deliveryActive.get() == false) {
-      vertx = VertxPlatformFactory.instance().getOrCreateVertx(config);    
+      VertxPlatformFactory.instance().getOrCreateVertx(config, this);    
       VertxPlatformFactory.instance().addVertxHolder(this);
     }
     setup();

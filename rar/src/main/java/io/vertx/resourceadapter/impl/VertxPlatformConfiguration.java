@@ -15,7 +15,7 @@ public class VertxPlatformConfiguration implements Serializable {
 
   private Integer clusterPort;
 
-  private String clusterHost;
+  private String clusterHost = "localhost";
 
   private String clusterConfigFile;
 
@@ -38,8 +38,10 @@ public class VertxPlatformConfiguration implements Serializable {
    * @param timeout
    *          the timeout to set
    */
-  public void setTimeout(Long timeout) {
-    this.timeout = timeout;
+  public void setTimeout(Long timeout) {    
+    if(timeout >= 0){
+      this.timeout = timeout;      
+    }
   }
 
   @Override
@@ -57,11 +59,7 @@ public class VertxPlatformConfiguration implements Serializable {
    * Currently only for host:port keypair.
    */
   public String getVertxPlatformIdentifier() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(getClusterHost());
-    sb.append(":");
-    sb.append(getClusterPort());   
-    return sb.toString();
+    return getClusterHost() + ":" + getClusterPort();
   }
 
   /**
@@ -86,9 +84,6 @@ public class VertxPlatformConfiguration implements Serializable {
    * @return the clusterHost
    */
   public String getClusterHost() {
-    if (clusterHost == null || clusterHost.trim().length() == 0) {
-      return "localhost";
-    }
     return clusterHost;
   }
 
@@ -97,7 +92,9 @@ public class VertxPlatformConfiguration implements Serializable {
    *          the clusterHost to set
    */
   public void setClusterHost(String clusterHost) {
-    this.clusterHost = clusterHost;
+    if(clusterHost != null){
+      this.clusterHost = clusterHost.trim();
+    }
   }
 
   /**

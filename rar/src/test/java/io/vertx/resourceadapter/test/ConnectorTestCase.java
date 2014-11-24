@@ -13,6 +13,7 @@ import io.vertx.resourceadapter.impl.VertxManagedConnection;
 import io.vertx.resourceadapter.impl.VertxManagedConnectionFactory;
 import io.vertx.resourceadapter.impl.VertxPlatformConfiguration;
 import io.vertx.resourceadapter.impl.VertxPlatformFactory;
+import io.vertx.resourceadapter.impl.VertxPlatformFactory.VertxListener;
 import io.vertx.resourceadapter.impl.VertxResourceAdapter;
 import io.vertx.resourceadapter.impl.WrappedEventBus;
 
@@ -27,7 +28,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.ResourceAdapterArchive;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,16 +38,11 @@ import org.junit.runner.RunWith;
  * @version $Revision: $
  */
 @RunWith(Arquillian.class)
-public class ConnectorTestCase {
+public class ConnectorTestCase implements VertxListener {
   
   private static final String DEPLOYMENT_NAME = "ConnectorTestCase";
   private static final String INBOUND_ADDRESS = "inbound-address";
   private static final String OUTBOUND_ADDRESS = "outbound-address";
-  
-  @AfterClass
-  public static void tearDownClass() throws Exception {
-    VertxPlatformFactory.instance().closeAllPlatforms();
-  }
   
   @Deployment
   public static ResourceAdapterArchive createDeployment() {
@@ -96,7 +91,7 @@ public class ConnectorTestCase {
     config.setClusterHost("localhost");
     config.setClusterPort(0);
     config.setClustered(true);
-    this.vertx = VertxPlatformFactory.instance().getOrCreateVertx(config);
+    VertxPlatformFactory.instance().getOrCreateVertx(config, this);
 
     CountDownLatch latch = new CountDownLatch(1);
 
@@ -129,7 +124,7 @@ public class ConnectorTestCase {
     VertxPlatformConfiguration config = new VertxPlatformConfiguration();
     config.setClusterHost("localhost");
     config.setClusterPort(0);
-    vertx = VertxPlatformFactory.instance().getOrCreateVertx(config);
+    VertxPlatformFactory.instance().getOrCreateVertx(config, this);
 
     CountDownLatch latch = new CountDownLatch(1);
 
@@ -161,4 +156,8 @@ public class ConnectorTestCase {
     
   } 
   
+  @Override
+  public void whenReady(Vertx vertx) {
+    this.vertx = vertx;
+  }
 }

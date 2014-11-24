@@ -7,6 +7,8 @@ import io.vertx.core.impl.ConcurrentHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,23 +51,43 @@ public class VertxPlatformFactory {
    * @param lifecyleListener
    *          the vertx lifecycle listener
    */
-  public synchronized Vertx getOrCreateVertx(final VertxPlatformConfiguration config) {
-    
-    Vertx vertx = vertxPlatforms.get(config.getVertxPlatformIdentifier());        
-    
-    if (vertx == null) {
-      log.log(Level.INFO, "Vert.x platform started: " + config);
+  public synchronized void getOrCreateVertx(final VertxPlatformConfiguration config, final VertxListener listener) {
 
-      VertxOptions options = new VertxOptions();      
-      options.setClustered(config.isClustered());
-      options.setClusterHost(config.getClusterHost());
-      options.setClusterPort(config.getClusterPort());        
+    Vertx vertx = vertxPlatforms.get(config.getVertxPlatformIdentifier());
 
-      vertx = Vertx.vertx(options);
-      vertxPlatforms.putIfAbsent(config.getVertxPlatformIdentifier(), vertx);
+    if (vertx != null) {
+      listener.whenReady(vertx);
+      return;
     }
-    
-    return vertx;
+
+    VertxOptions options = new VertxOptions();
+    options.setClustered(config.isClustered());
+    options.setClusterHost(config.getClusterHost());
+    options.setClusterPort(config.getClusterPort());
+
+    CountDownLatch latch = new CountDownLatch(1);
+    Vertx.clusteredVertx(options, ar -> {
+          
+      try {
+            if (ar.succeeded()) {
+              log.log(Level.INFO, "Acquired Vert.x platform.");
+              listener.whenReady(ar.result());
+              vertxPlatforms.put(config.getVertxPlatformIdentifier(), ar.result());
+            } else {
+              throw new RuntimeException("Could not acquire Vert.x platform.", ar.cause());
+            }
+          } finally {
+            latch.countDown();
+          }
+        });    
+      
+    try{
+        
+        if(!latch.await(config.getTimeout(), TimeUnit.MILLISECONDS)){
+          log.log(Level.SEVERE, "Could not acquire Vert.x platform in interval.");
+          throw new RuntimeException("Could not acquire Vert.x platform in interval");
+        }          
+      }catch(Exception ignore){}      
   }
 
   /**
@@ -140,7 +162,7 @@ public class VertxPlatformFactory {
       
       for (Map.Entry<String, Vertx> entry : this.vertxPlatforms.entrySet()) {        
         stopVertx(entry.getValue());
-      }            
+      }                  
       vertxPlatforms.clear();
       vertxHolders.clear();    
     
@@ -150,7 +172,30 @@ public class VertxPlatformFactory {
   }
 
   private void stopVertx(Vertx vertx) {
-    vertx.close();
+    
+    CountDownLatch latch = new CountDownLatch(1);
+    vertx.close(ar -> {
+      
+      try{
+        
+        if(ar.succeeded()){
+          log.log(Level.INFO, "Closed Vert.x platform");
+        } else{
+          log.log(Level.WARNING, "Could not close Vert.x platform.", ar.cause());
+        }        
+      }
+      finally{
+        latch.countDown();
+      }    
+    });
+    
+    try{
+      
+      if(!latch.await(5, TimeUnit.SECONDS)){        
+        log.log(Level.WARNING, "Could not close Vert.x platform");
+      }      
+    }catch(Exception ignore){}    
+  
   }
  
  
@@ -171,6 +216,7 @@ public class VertxPlatformFactory {
      *          the Vert.x
      */
     void whenReady(Vertx vertx);
+  
   }
 
 }

@@ -121,11 +121,6 @@ The configuration for outbound and inbound connectivity are almost the same:
      * Type: java.lang.Integer
      * Outbound / Inbound
      * <b>clusterPort</b> specifies which port the distributed event bus will be bound to. Default to 0, means random available port.
-   * <b>clusterConfigFile</b>
-     * Type: java.lang.String
-     * Outbound / Inbound
-     * <b>clusterConfigFile</b> specifies which cluster file will be used to join the vertx cluster. <b>default-cluster.xml</b> shipped with the resource adapter will be used if it is not specified. It can be either a file absolute path, or a system property using expression like: '${cluster.config.file}'.
-     The resource adapter ships a 'default-cluster.xml' inside the .rar file, which will join a multicast network
    * <b>timeout</b>
      * Type: java.lang.Long
      * Outbound / Inbound

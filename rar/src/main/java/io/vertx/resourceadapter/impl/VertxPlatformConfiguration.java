@@ -13,7 +13,7 @@ public class VertxPlatformConfiguration implements Serializable {
 
   private static final long serialVersionUID = -2647099599010357452L;
 
-  private Integer clusterPort;
+  private Integer clusterPort = Integer.valueOf(0);
 
   private String clusterHost = "localhost";
 
@@ -66,10 +66,7 @@ public class VertxPlatformConfiguration implements Serializable {
    * @return the clusterPort
    */
   public Integer getClusterPort() {
-    if (clusterPort == null) {
-      return Integer.valueOf(0);
-    }
-    return clusterPort;
+    return (clusterPort == null) ? Integer.valueOf(0) : clusterPort;     
   }
 
   /**
@@ -77,7 +74,9 @@ public class VertxPlatformConfiguration implements Serializable {
    *          the clusterPort to set
    */
   public void setClusterPort(Integer clusterPort) {
-    this.clusterPort = clusterPort;
+    if(clusterPort != null){
+      this.clusterPort = clusterPort;
+    }
   }
 
   /**

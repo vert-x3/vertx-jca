@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-jca</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>vertx-jca-adapter</artifactId>
+  <packaging>rar</packaging>
+
+  <properties>
+    <version.org.jboss.ironjacamar>1.2.0.Final</version.org.jboss.ironjacamar>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-hazelcast</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-jca-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec</groupId>
+      <artifactId>jboss-javaee-7.0</artifactId>
+      <version>1.0.1.Final</version>
+      <type>pom</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-core-impl</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-depchain</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>provided</scope>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-deployers-common</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-deployers-fungal</artifactId>
+      <version>${version.org.jboss.ironjacamar}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.ironjacamar</groupId>
+      <artifactId>ironjacamar-arquillian-embedded</artifactId>
+      <version>1.2.0.Final</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>prepare-package</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>jboss</id>
+      <url>http://repository.jboss.org/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>snapshots</id>
+      <url>http://repository.jboss.org/nexus/content/repositories/snapshots</url>
+    </repository>
+    <repository>
+      <id>fungal</id>
+      <url>http://jesperpedersen.github.com/fungal/maven2</url>
+    </repository>
+  </repositories>
+</project>

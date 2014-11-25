@@ -3,7 +3,6 @@ package io.vertx.resourceadapter.inflow.impl;
 import io.vertx.resourceadapter.impl.AbstractJcaBase;
 import io.vertx.resourceadapter.inflow.VertxListener;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.resource.spi.Activation;
@@ -60,12 +59,6 @@ public class VertxActivationSpec extends AbstractJcaBase implements
     log.finest("validate()");
     if (this.address == null || this.address.length() == 0) {
       throw new InvalidPropertyException("Address must be specified.");
-    }
-    if (this.getClusterConfigFile() == null
-        || this.getClusterConfigFile().length() == 0) {
-      log.log(
-          Level.WARNING,
-          "Cluster configuration file is not specified, Will use default-cluster.xml provided by the resource adapter.");
     }
   }
 

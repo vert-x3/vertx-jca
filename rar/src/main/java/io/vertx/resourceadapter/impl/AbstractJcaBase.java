@@ -42,23 +42,6 @@ public abstract class AbstractJcaBase {
     this.vertxPlatformConfig.setClusterHost(clusterHost);
   }
 
-  /**
-   * @return the clusterConfigFile
-   */
-
-  public String getClusterConfigFile() {
-    return this.vertxPlatformConfig.getClusterConfigFile();
-  }
-
-  /**
-   * @param clusterConfigFile
-   *          the clusterConfigFile to set
-   */
-  @ConfigProperty
-  public void setClusterConfigFile(String clusterConfigFile) {
-    this.vertxPlatformConfig.setClusterConfigFile(clusterConfigFile);
-  }
-
   @ConfigProperty(defaultValue = "false")
   public void setClustered(Boolean clustered){
     this.vertxPlatformConfig.setClustered(clustered);

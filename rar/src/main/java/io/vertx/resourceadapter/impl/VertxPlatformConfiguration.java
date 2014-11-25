@@ -17,8 +17,6 @@ public class VertxPlatformConfiguration implements Serializable {
 
   private String clusterHost = "localhost";
 
-  private String clusterConfigFile;
-
   private boolean clustered;
   
   /**
@@ -95,22 +93,7 @@ public class VertxPlatformConfiguration implements Serializable {
       this.clusterHost = clusterHost.trim();
     }
   }
-
-  /**
-   * @return the clusterConfigFile
-   */
-  public String getClusterConfigFile() {
-    return clusterConfigFile;
-  }
-
-  /**
-   * @param clusterConfigFile
-   *          the clusterConfiguratoinFile to set
-   */
-  public void setClusterConfigFile(String clusterConfigFile) {
-    this.clusterConfigFile = clusterConfigFile;
-  }
-
+  
   public boolean isClustered(){
     return clustered;
   }
@@ -123,8 +106,6 @@ public class VertxPlatformConfiguration implements Serializable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result
-        + ((clusterConfigFile == null) ? 0 : clusterConfigFile.hashCode());
     result = prime * result
         + ((clusterHost == null) ? 0 : clusterHost.hashCode());
     result = prime * result
@@ -147,11 +128,6 @@ public class VertxPlatformConfiguration implements Serializable {
     if (getClass() != obj.getClass())
       return false;
     VertxPlatformConfiguration other = (VertxPlatformConfiguration) obj;
-    if (clusterConfigFile == null) {
-      if (other.clusterConfigFile != null)
-        return false;
-    } else if (!clusterConfigFile.equals(other.clusterConfigFile))
-      return false;
     if (clusterHost == null) {
       if (other.clusterHost != null)
         return false;

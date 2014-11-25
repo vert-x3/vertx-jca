@@ -69,26 +69,22 @@ public class VertxPlatformFactory {
     options.setClusterPort(config.getClusterPort());
 
     CountDownLatch latch = new CountDownLatch(1);
-    Vertx.clusteredVertx(options,
-        ar -> {
-
-          try {
-            if (ar.succeeded()) {
-              log.log(Level.INFO, "Acquired Vert.x platform.");
-              listener.whenReady(ar.result());
-              vertxPlatforms.put(config.getVertxPlatformIdentifier(),
-                  ar.result());
-            } else {
-              throw new RuntimeException("Could not acquire Vert.x platform.",
-                  ar.cause());
-            }
-          } finally {
-            latch.countDown();
-          }
-        });
+    Vertx.clusteredVertx(options, ar -> {
+      try {
+        if (ar.succeeded()) {
+          log.log(Level.INFO, "Acquired Vert.x platform.");
+          listener.whenReady(ar.result());
+          vertxPlatforms.put(config.getVertxPlatformIdentifier(), ar.result());
+        } else {
+          throw new RuntimeException("Could not acquire Vert.x platform.",
+              ar.cause());
+        }
+      } finally {
+        latch.countDown();
+      }
+    });
 
     try {
-
       if (!latch.await(config.getTimeout(), TimeUnit.MILLISECONDS)) {
         log.log(Level.SEVERE, "Could not acquire Vert.x platform in interval.");
         throw new RuntimeException(
@@ -186,25 +182,22 @@ public class VertxPlatformFactory {
   private void stopVertx(Vertx vertx) {
 
     CountDownLatch latch = new CountDownLatch(1);
-    vertx
-        .close(ar -> {
+    vertx.close(ar -> {
+      try {
 
-          try {
-
-            if (ar.succeeded()) {
-              log.log(Level.INFO, "Closed Vert.x platform");
-            } else {
-              log.log(Level.WARNING, "Could not close Vert.x platform.",
-                  ar.cause());
-            }
-          } finally {
-            latch.countDown();
-          }
-        });
+        if (ar.succeeded()) {
+          log.log(Level.INFO, "Closed Vert.x platform");
+        } else {
+          log.log(Level.WARNING, "Could not close Vert.x platform.",
+              ar.cause());
+        }
+      } finally {
+        latch.countDown();
+      }
+    });
 
     try {
-
-      if (!latch.await(5, TimeUnit.SECONDS)) {
+      if (!latch.await(30, TimeUnit.SECONDS)) {
         log.log(Level.WARNING, "Could not close Vert.x platform");
       }
     } catch (Exception ignore) {

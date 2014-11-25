@@ -5,13 +5,12 @@ package io.vertx.resourceadapter.impl;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 
-import java.util.Set;
-
 import javax.resource.ResourceException;
 import javax.resource.spi.ConnectionManager;
 import javax.resource.spi.ConnectionRequestInfo;
 import javax.resource.spi.ManagedConnection;
 import javax.resource.spi.ManagedConnectionFactory;
+import java.util.Set;
 
 /**
  * The connection manager used in non-managed environments.
@@ -24,6 +23,7 @@ public class VertxConnectionManager implements ConnectionManager {
   private static final long serialVersionUID = -4300976583785557617L;
 
   /** Used to store current managed connections **/
+  // FIXME - this set is never added to!
   private final Set<ManagedConnection> connections = new ConcurrentHashSet<>();
 
   @Override

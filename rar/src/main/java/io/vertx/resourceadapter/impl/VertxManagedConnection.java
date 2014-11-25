@@ -3,12 +3,6 @@ package io.vertx.resourceadapter.impl;
 import io.vertx.core.Vertx;
 import io.vertx.resourceadapter.VertxEventBus;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
-
 import javax.resource.NotSupportedException;
 import javax.resource.ResourceException;
 import javax.resource.spi.ConnectionEvent;
@@ -19,6 +13,11 @@ import javax.resource.spi.ManagedConnection;
 import javax.resource.spi.ManagedConnectionMetaData;
 import javax.security.auth.Subject;
 import javax.transaction.xa.XAResource;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * VertxManagedConnection
@@ -32,8 +31,8 @@ public class VertxManagedConnection implements ManagedConnection, VertxHolder {
 
   private final VertxManagedConnectionFactory mcf;
 
-  private final List<ConnectionEventListener> listeners 
-  = Collections.synchronizedList(new ArrayList<ConnectionEventListener>(1));;
+  private final List<ConnectionEventListener> listeners
+    = Collections.synchronizedList(new ArrayList<>(1));;
 
   private VertxConnectionImpl vertxConn;
 

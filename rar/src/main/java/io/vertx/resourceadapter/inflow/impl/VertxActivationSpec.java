@@ -3,21 +3,19 @@ package io.vertx.resourceadapter.inflow.impl;
 import io.vertx.resourceadapter.impl.AbstractJcaBase;
 import io.vertx.resourceadapter.inflow.VertxListener;
 
-import java.util.logging.Logger;
-
 import javax.resource.spi.Activation;
 import javax.resource.spi.ActivationSpec;
 import javax.resource.spi.ConfigProperty;
 import javax.resource.spi.InvalidPropertyException;
 import javax.resource.spi.ResourceAdapter;
+import java.util.logging.Logger;
 
 /**
  * VertxActivationSpec
  *  
  */
 @Activation(messageListeners = { VertxListener.class })
-public class VertxActivationSpec extends AbstractJcaBase implements
-    ActivationSpec {
+public class VertxActivationSpec extends AbstractJcaBase implements ActivationSpec {
 
   private static final Logger log = Logger.getLogger(VertxActivationSpec.class.getName());
 

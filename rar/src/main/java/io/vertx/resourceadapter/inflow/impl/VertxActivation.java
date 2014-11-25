@@ -1,15 +1,5 @@
 package io.vertx.resourceadapter.inflow.impl;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.resource.ResourceException;
-import javax.resource.spi.endpoint.MessageEndpoint;
-import javax.resource.spi.endpoint.MessageEndpointFactory;
-import javax.resource.spi.work.Work;
-import javax.resource.spi.work.WorkException;
-
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
@@ -18,6 +8,15 @@ import io.vertx.resourceadapter.impl.VertxPlatformConfiguration;
 import io.vertx.resourceadapter.impl.VertxPlatformFactory;
 import io.vertx.resourceadapter.impl.VertxResourceAdapter;
 import io.vertx.resourceadapter.inflow.VertxListener;
+
+import javax.resource.ResourceException;
+import javax.resource.spi.endpoint.MessageEndpoint;
+import javax.resource.spi.endpoint.MessageEndpointFactory;
+import javax.resource.spi.work.Work;
+import javax.resource.spi.work.WorkException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * VertxActivation
@@ -83,7 +82,7 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener, V
    */
   public void start() throws ResourceException {
     
-    if (deliveryActive.get() == false) {
+    if (!deliveryActive.get()) {
       VertxPlatformFactory.instance().getOrCreateVertx(config, this);    
       VertxPlatformFactory.instance().addVertxHolder(this);
     }
@@ -94,12 +93,8 @@ public class VertxActivation<T> implements VertxPlatformFactory.VertxListener, V
     String address = this.spec.getAddress();
     try {
       final MessageEndpoint endPoint = endpointFactory.createEndpoint(null);
-      this.messageHandler = new Handler<Message<Object>>() {
-        public void handle(Message<Object> message) {
-          handleMessage(endPoint, message);
-        }
-      };
-      
+      this.messageHandler = message -> handleMessage(endPoint, message);
+
       if (this.vertx == null) {
         throw new ResourceException("Vertx platform did not start yet.");
       }

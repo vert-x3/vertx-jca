@@ -44,13 +44,11 @@ public class VertxPlatformConfiguration implements Serializable {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder(getVertxPlatformIdentifier());
+    String str = getVertxPlatformIdentifier();
     if (timeout != null) {
-      sb.append(":timeout[");
-      sb.append(timeout);
-      sb.append("]");
+      str += ":timeout[" + timeout + "]";
     }
-    return sb.toString();
+    return str;
   }
 
   /**

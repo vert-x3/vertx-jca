@@ -93,7 +93,7 @@ public class VertxManagedConnectionFactory extends AbstractJcaBase implements
    *           Generic exception
    */
   public Object createConnectionFactory() throws ResourceException {
-    return createConnectionFactory(new VertxConnectionManager());
+    throw new ResourceException("Vert.x JCA adapter not supported in non-managed environment");
   }
 
   /**

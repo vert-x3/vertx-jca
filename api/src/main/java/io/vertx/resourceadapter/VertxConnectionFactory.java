@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.vertx.resourceadapter;
 
 import java.io.Serializable;

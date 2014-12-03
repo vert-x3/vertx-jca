@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.vertx.resourceadapter.inflow;
 
 import io.vertx.core.eventbus.Message;

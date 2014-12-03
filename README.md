@@ -24,26 +24,19 @@ Usage:
 
 javax.naming.InitialContext ctx = null;
 io.vertx.resourceadapter.VertxConnection conn = null;
-try
-{
+try {
    ctx = new javax.naming.InitialContext();
    io.vertx.resourceadapter.VertxConnectionFactory connFactory =
    (io.vertx.resourceadapter.VertxConnectionFactory)ctx.lookup("java:/eis/VertxConnectionFactory");
    conn = connFactory.getVertxConnection();
-   conn.eventBus().send("outbound-address", "Hello from JCA");
-}
-catch (Exception e)
-{
+   conn.vertxEventBus().send("outbound-address", "Hello from JCA");
+} catch (Exception e) {
    e.printStackTrace();
-}
-finally
-{
-   if (ctx != null)
-   {
+} finally {
+   if (ctx != null) {
       ctx.close();
    }
-   if (conn != null)
-   {
+   if (conn != null) {
       conn.close();
    }
 }
@@ -83,7 +76,7 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
 @ResourceAdapter("TODO")
 public class VertxMonitor implements VertxListener {
 
-   private Logger logger = Logger.getLogger(VertxMonitor.class.getName());
+   private static final Logger logger = Logger.getLogger(VertxMonitor.class.getName());
 
     /**
      * Default constructor.
@@ -93,12 +86,12 @@ public class VertxMonitor implements VertxListener {
     }
 
    @Override
-   public <T> void onMessage(Message<T> message)
-   {
+   public <T> void onMessage(Message<T> message) {
       logger.info("Get a message from Vert.x at address: " + message.address());
+
       T body = message.body();
-      if (body != null)
-      {
+
+      if (body != null) {
          logger.info("Body of the message: " + body.toString());
       }
    }

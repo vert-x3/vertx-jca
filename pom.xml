@@ -7,7 +7,7 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>5</version>
   </parent>
 
   <artifactId>vertx-jca</artifactId>
@@ -35,16 +35,22 @@
     <module>rar</module>
   </modules>
 
+  <properties>
+    <stack.version>3.0.0-SNAPSHOT</stack.version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.vertx</groupId>
-        <artifactId>vertx-core</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <artifactId>vertx-dependencies</artifactId>
+        <version>${stack.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
-        <artifactId>vertx-hazelcast</artifactId>
+        <artifactId>vertx-jca-api</artifactId>
         <version>3.0.0-SNAPSHOT</version>
       </dependency>
     </dependencies>

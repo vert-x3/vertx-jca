@@ -25,7 +25,6 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-jca-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.spec</groupId>
@@ -83,18 +82,30 @@
     </plugins>
   </build>
 
-  <repositories>
-    <repository>
-      <id>jboss</id>
-      <url>http://repository.jboss.org/nexus/content/groups/public</url>
-    </repository>
-    <repository>
-      <id>snapshots</id>
-      <url>http://repository.jboss.org/nexus/content/repositories/snapshots</url>
-    </repository>
-    <repository>
-      <id>fungal</id>
-      <url>http://jesperpedersen.github.com/fungal/maven2</url>
-    </repository>
-  </repositories>
+  <profiles>
+    <!-- Make Central rules happy -->
+    <profile>
+      <id>jboss-repo</id>
+      <activation>
+        <property>
+          <name>!noRepo</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>jboss</id>
+          <url>http://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+        <repository>
+          <id>snapshots</id>
+          <url>http://repository.jboss.org/nexus/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+          <id>fungal</id>
+          <url>http://jesperpedersen.github.com/fungal/maven2</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
 </project>

@@ -93,8 +93,10 @@
       </activation>
       <repositories>
         <repository>
-          <id>jboss</id>
-          <url>http://repository.jboss.org/nexus/content/groups/public</url>
+          <id>jboss-repository</id>
+          <url>
+              https://repository.jboss.org/nexus/content/repositories/public
+          </url>
           <releases>
               <enabled>true</enabled>
           </releases>

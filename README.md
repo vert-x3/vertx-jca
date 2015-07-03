@@ -3,12 +3,12 @@ JCA Resource Adapter for Vert.x 3.x
 
 [![Build Status](https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-jca)](https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-jca/)
 
-This project provides a [JCA](http://en.wikipedia.org/wiki/Java_EE_Connector_Architecture) version 1.6 compliant adapter allowing for the integration of the [Vertx.x](http://vertx.io) runtime with a JEE compliant application server. 
+This project provides a [JCA](http://en.wikipedia.org/wiki/Java_EE_Connector_Architecture) version 1.6 compliant adapter allowing for the integration of the [Vertx.x](http://vertx.io) runtime with a JEE compliant application server.
 
 The Vert.x JCA adapter uses and included Vert.x version 3.0.0-SNAPSHOT which is currently under active [development](https://github.com/eclipse/vert.x).
 
 **Note**
-Currently the [Wildfly Application Server](http://wildfly.org) is the only JEE application platform that has been tested. The adapter has been tested with version 8.1 which is the latest released version. 
+Currently the [Wildfly Application Server](http://wildfly.org) is the only JEE application platform that has been tested. The adapter has been tested with version 8.1 which is the latest released version.
 
 Overview
 ------
@@ -49,7 +49,7 @@ try {
 Inbound Connectivity
 ------
 
-Since the JCA 1.5 specification, inbound connectivity is provided via a listener interface which can be implemented by a JEE Message Driven Bean (MDB). As opposed to the default JMS listener type, the Vert.x JCA listener interface allows an MDB to receive messages from a Vert.x address. 
+Since the JCA 1.5 specification, inbound connectivity is provided via a listener interface which can be implemented by a JEE Message Driven Bean (MDB). As opposed to the default JMS listener type, the Vert.x JCA listener interface allows an MDB to receive messages from a Vert.x address.
 
 The end point of the MDB implements interface: <b>io.vertx.resourceadapter.inflow.VertxListener</b>.
 
@@ -101,7 +101,7 @@ public class VertxMonitor implements VertxListener {
 
 </pre>
 
-Note, the Java annotations used. Similarly, an EJB and JEE application server dsscriptor could also be used, exclusively, or in conjunction with annotations. Please see the EJB 3.0 specification for further details. 
+Note, the Java annotations used. Similarly, an EJB and JEE application server dsscriptor could also be used, exclusively, or in conjunction with annotations. Please see the EJB 3.0 specification for further details.
 
 Configuration
 -------
@@ -135,7 +135,7 @@ The Vert.x JCA adapter requires the installation of Vert.x 3.0.0-SNAPSHOT into y
 [https://github.com/eclipse/vert.x
 ](http://https://github.com/eclipse/vert.x)
 
-for instructions in building and installing the environment. 
+for instructions in building and installing the environment.
 
 For the Vert.x JCA adapter execute
 
@@ -184,9 +184,8 @@ He paved the way.
 
 Examples
 -------
-The ./examples directory contains a complete JEE application example that can be configured and deployed to the WildFly environment. Please see the README.md file in the ./examples directory.
+You can find an example of application using the Vert.x JCA in the https://github.com/vert-x3/vertx-examples project.
 
 Contributing
 ---
 As with most open source projects, any contributions are **always** encouraged and welcome. While seemingly complex, the JCA specification and implementation are not insurmountable and can provide unique and interesting ways for development solutions. Simiarly, Vert.x is a asynchoronous application platform providing a new paradigm for [Reactive](http://www.reactivemanifesto.org) based design, development and deployment.
-

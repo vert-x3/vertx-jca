@@ -132,8 +132,7 @@ The Vert.x JCA adapter requires [Apache Maven](http://maven.apache.org) to compi
 
 The Vert.x JCA adapter requires the installation of Vert.x 3.0.0-SNAPSHOT into your local Maven repository. Being that this is a development branch, you will need to install this manually. Please see
 
-[https://github.com/eclipse/vert.x
-](http://https://github.com/eclipse/vert.x)
+[https://github.com/eclipse/vert.x](https://github.com/eclipse/vert.x)
 
 for instructions in building and installing the environment.
 

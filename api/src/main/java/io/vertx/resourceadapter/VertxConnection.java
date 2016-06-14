@@ -7,7 +7,7 @@ import javax.resource.ResourceException;
  *
  * @version $Revision: $
  */
-public interface VertxConnection {
+public interface VertxConnection extends AutoCloseable {
   
   /**
    * Get VertEventBus from the Vert.x platform.
@@ -33,6 +33,7 @@ public interface VertxConnection {
    * @throws ResourceException
    *           Thrown if the connection failed close.
    */
+  @Override
   public void close() throws ResourceException;
 
 }

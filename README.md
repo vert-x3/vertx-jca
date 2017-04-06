@@ -22,8 +22,7 @@ An application component (e.g Servlet, EJB), can send messages to a Vert.x insta
 
 Usage:
 
-<pre>
-
+```java
 javax.naming.InitialContext ctx = null;
 io.vertx.resourceadapter.VertxConnection conn = null;
 try {
@@ -42,7 +41,7 @@ try {
       conn.close();
    }
 }
-</pre>
+```
 
    * NOTE: as with any JCA resource, always call the close() method when your work is complete to allow the connection to be returned to the pool. This will **not** close the underly Vert.x instance. Please see the JCA specification for my details.
 
@@ -53,8 +52,7 @@ Since the JCA 1.5 specification, inbound connectivity is provided via a listener
 
 The end point of the MDB implements interface: <b>io.vertx.resourceadapter.inflow.VertxListener</b>.
 
-<pre>
-
+```java
 package io.vertx.resourceadapter.examples.mdb;
 
 import io.vertx.resourceadapter.inflow.VertxListener;
@@ -98,8 +96,7 @@ public class VertxMonitor implements VertxListener {
       }
    }
 }
-
-</pre>
+```
 
 Note, the Java annotations used. Similarly, an EJB and JEE application server dsscriptor could also be used, exclusively, or in conjunction with annotations. Please see the EJB 3.0 specification for further details.
 
@@ -155,21 +152,19 @@ Maven Dependency
 
 In order for projects to consume the Vert.x JCA adapter, a Maven dependency needs to be added to your pom.xml, Ivy configuration file etc:
 
-<pre>
-
-  &lt;dependency&gt;
-    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;vertx-jca-adapter&lt;/artifactId&gt;
-    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
-  &lt;/dependency&gt;
-  &lt;dependency&gt;
-    &lt;groupId&gt;io.vertx&lt;/groupId&gt;
-    &lt;artifactId&gt;vertx-jca-adapter&lt;/artifactId&gt;
-    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
-    &lt;type&gt;rar&lt;/type&gt;
-  &lt;/dependency&gt;
-
-</pre>
+```xml
+  <dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-jca-adapter</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+  </dependency>
+  <dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-jca-adapter</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+    <type>rar</type>
+  </dependency>
+```
 
 
 Credits

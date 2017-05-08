@@ -141,7 +141,7 @@ This will build, package and install the Vert.x JCA adapter to your local reposi
 
 The resultant JEE archive can be found at ./rar/target/vertx-jca-adapter-<version.rar.
 
-The above command will also run the JUnit tests. Being that the Vert.x JCA adapter is a JEE component, a JEE compliant runtime environemtn is required to adequately test the adapter. For our purposes, the project uses [Arquillian](http://arquillian.org) and an [IronJacamar](http://www.ironjacamar.org) embedded container to provide the testing runtime environment. For more information, please see the respective documentation for each project.
+The above command will also run the JUnit tests. Being that the Vert.x JCA adapter is a JEE component, a JEE compliant runtime environment is required to adequately test the adapter. For our purposes, the project uses [Arquillian](http://arquillian.org) and an [IronJacamar](http://www.ironjacamar.org) embedded container to provide the testing runtime environment. For more information, please see the respective documentation for each project.
 
 Deployment
 ---

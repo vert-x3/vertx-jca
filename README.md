@@ -98,7 +98,7 @@ public class VertxMonitor implements VertxListener {
 }
 ```
 
-Note, the Java annotations used. Similarly, an EJB and JEE application server dsscriptor could also be used, exclusively, or in conjunction with annotations. Please see the EJB 3.0 specification for further details.
+Note, the Java annotations used. Similarly, an EJB and JEE application server descriptor could also be used, exclusively, or in conjunction with annotations. Please see the EJB 3.0 specification for further details.
 
 Configuration
 -------

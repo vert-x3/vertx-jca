@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>vertx-jca</artifactId>
-  <version>3.5.3</version>
+  <version>3.5.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Vert.x JCA</name>
@@ -34,7 +34,7 @@
   </modules>
 
   <properties>
-    <stack.version>3.5.3</stack.version>
+    <stack.version>3.5.4-SNAPSHOT</stack.version>
   </properties>
 
   <dependencyManagement>
@@ -49,7 +49,7 @@
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-jca-api</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -1,7 +1,7 @@
 JCA Resource Adapter for Vert.x 3.x
 ===
 
-[![Build Status](https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-jca)](https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-jca/)
+[![Build Status](https://travis-ci.org/vert-x3/vertx-jca.svg?branch=master)](https://travis-ci.org/vert-x3/vertx-jca)
 
 This project provides a [JCA](http://en.wikipedia.org/wiki/Java_EE_Connector_Architecture) version 1.6 compliant adapter allowing for the integration of the [Vertx.x](http://vertx.io) runtime with a JEE compliant application server.
 

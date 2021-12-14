@@ -14,7 +14,7 @@
       
     <artifactId>vertx-jca</artifactId>
       
-    <version>3.9.11</version>
+    <version>3.9.12-SNAPSHOT</version>
       
     <packaging>pom</packaging>
       
@@ -54,7 +54,7 @@
       
     <properties>
             
-        <stack.version>3.9.11</stack.version>
+        <stack.version>3.9.12-SNAPSHOT</stack.version>
           
     </properties>
       
@@ -82,7 +82,7 @@
                         
                 <artifactId>vertx-jca-api</artifactId>
                         
-                <version>3.9.11</version>
+                <version>3.9.12-SNAPSHOT</version>
                       
             </dependency>
                 
